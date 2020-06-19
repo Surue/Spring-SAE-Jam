@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Cinemachine;
 using UnityEngine;
 
 [RequireComponent(typeof(CarMovement))]
@@ -9,6 +10,8 @@ public class PlayerController : MonoBehaviour
     private Rigidbody rigidbody;
     private UIManager uiManager;
     private Material material;
+    private CinemachineVirtualCamera vcam;
+    private CinemachineBasicMultiChannelPerlin noise;
 
     [SerializeField] private float maxLife = 100.0f;
     private float currentLife;
@@ -17,6 +20,10 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float damageRatio = 0.1f;
     [SerializeField] private float coolDown = 0.1f;
     private float coolDownTimer = 0.0f;
+    [SerializeField] private float amplitudeGain = 10f;
+    [SerializeField] private float frequencyGain = 10f;
+    [SerializeField] private float screenshakeDuration = 1f;
+    private int nbScreenShake = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -24,6 +31,8 @@ public class PlayerController : MonoBehaviour
         carMovement = GetComponent<CarMovement>();
         rigidbody = GetComponent<Rigidbody>();
         uiManager = FindObjectOfType<UIManager>();
+        vcam = GetComponentInChildren<CinemachineVirtualCamera>();
+        noise = vcam.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
         material = GetComponentInChildren<MeshRenderer>().material;
 
 
@@ -67,6 +76,25 @@ public class PlayerController : MonoBehaviour
     void GameOver()
     {
         Debug.Log("Game Over");
+    }
+
+    public void ScreenShake()
+    {
+        noise.m_AmplitudeGain = amplitudeGain;
+        noise.m_FrequencyGain = frequencyGain;
+        nbScreenShake++;
+        StartCoroutine(StopScreenShake(screenshakeDuration));
+    }
+
+    IEnumerator StopScreenShake(float seconds)
+    {
+        yield return new WaitForSeconds(seconds);
+        if (nbScreenShake == 1)
+        {
+            noise.m_AmplitudeGain = 0;
+            noise.m_FrequencyGain = 0;
+        }
+        nbScreenShake--;
     }
 
 }
