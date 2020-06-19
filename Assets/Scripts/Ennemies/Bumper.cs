@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-[RequireComponent(typeof(CarMovement))]
 public class Bumper : MonoBehaviour {
 
     [Header("Idle state")] 
@@ -23,16 +22,20 @@ public class Bumper : MonoBehaviour {
     [SerializeField] private float dashSpeed = 5.0f;
     [SerializeField] private float dashDistance = 7.5f;
 
+    [Header("Death")] 
+    [SerializeField] private ParticleSystem explosionParticleSystem;
+    [SerializeField] private float dyingTime = 3.0f;
+    
     private Transform player;
     private Material material;
 
     private float currentTimer = 0;
 
-    private CarMovement carMovement;
-    
     //Movement
     private float movementAngle = 0;
     private float movementSpeed = 0;
+    
+    private CarMovement carMovement;
 
     [Header("RayCast")]
     [SerializeField] private float distanceRayCast = 10f;
@@ -45,7 +48,8 @@ public class Bumper : MonoBehaviour {
         IDLE, //Basic states to wait a few seconds before starting to roll again
         MOVE_TO_POSITION, //The bumper move to a "good" position to run on the player
         PREPARING_DASH, //The bumper stay still and load its dash. It's still able to slowly rotate
-        DASH //Dash over a given distance
+        DASH, //Dash over a given distance
+        DYING
     }
 
     private State state_ = State.MOVE_TO_POSITION;
@@ -138,6 +142,14 @@ public class Bumper : MonoBehaviour {
                     carMovement.SetMaxSpeed(basicSpeed);
                 }
                 break;
+            case State.DYING:
+                material.color = Color.Lerp(Color.white, Color.clear, currentTimer / dyingTime);
+                
+                if (currentTimer > dyingTime)
+                {
+                    Destroy(gameObject);
+                }
+                break;
             default:
                 throw new ArgumentOutOfRangeException();
         }
@@ -145,6 +157,8 @@ public class Bumper : MonoBehaviour {
 
     private void FixedUpdate()
     {
+        if (state_ == State.DYING) return;
+        
         carMovement.Movement(movementAngle, movementSpeed);
     }
 
@@ -164,6 +178,21 @@ public class Bumper : MonoBehaviour {
         if (state_ == State.DASH)
         {
             targetPosition = (transform.position - targetPosition).normalized * dashDistance * 2;
+        }
+
+        if (other.gameObject.GetComponent<PlayerController>() != null)
+        {
+            //Kill bumper
+            explosionParticleSystem.Play();
+
+            state_ = State.DYING;
+
+            currentTimer = 0;
+            
+            Destroy(carMovement);
+            Rigidbody body = GetComponent<Rigidbody>();
+            body.velocity = (transform.position - other.GetContact(0).point).normalized * other.rigidbody.velocity.magnitude;
+            body.constraints = RigidbodyConstraints.None;
         }
     }
 
