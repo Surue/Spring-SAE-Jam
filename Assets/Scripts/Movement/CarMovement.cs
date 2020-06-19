@@ -27,7 +27,7 @@ public class CarMovement : MonoBehaviour
     {
         if (Math.Abs(speedInput) < minSpeed)
         {
-            if (Math.Abs(currentSpeed) > minSpeed)
+            if (currentSpeed > minSpeed)
             {
                 currentSpeed -= slowdown * Time.fixedDeltaTime;
             }
