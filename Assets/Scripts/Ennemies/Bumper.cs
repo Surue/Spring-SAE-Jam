@@ -27,7 +27,6 @@ public class Bumper : MonoBehaviour {
     [SerializeField] private float dyingTime = 3.0f;
     
     private Transform player;
-    private Material material;
 
     private float currentTimer = 0;
 
@@ -44,12 +43,19 @@ public class Bumper : MonoBehaviour {
     [SerializeField][Range(0, 10)] private int iterationRayCast = 2;
     [SerializeField] private LayerMask layerMaskRayCast;
     
+    [Header("Rendering")]
+    [SerializeField] private MeshRenderer meshRenderer;
+    private Material material;
+
+    [Header("Audio")] 
+    [SerializeField] private AudioSource audioSource;
+    
     enum State {
         IDLE, //Basic states to wait a few seconds before starting to roll again
         MOVE_TO_POSITION, //The bumper move to a "good" position to run on the player
         PREPARING_DASH, //The bumper stay still and load its dash. It's still able to slowly rotate
         DASH, //Dash over a given distance
-        DYING
+        DYING //State to wait final destroy
     }
 
     private State state_ = State.MOVE_TO_POSITION;
@@ -58,7 +64,7 @@ public class Bumper : MonoBehaviour {
     void Start() {
         player = FindObjectOfType<PlayerController>().transform;
 
-        material = GetComponent<MeshRenderer>().material;
+        material = meshRenderer.material;
 
         carMovement = GetComponent<CarMovement>();
     }
@@ -180,8 +186,10 @@ public class Bumper : MonoBehaviour {
             targetPosition = (transform.position - targetPosition).normalized * dashDistance * 2;
         }
 
-        if (other.gameObject.GetComponent<PlayerController>() != null)
+        if (other.gameObject.CompareTag("Player"))
         {
+            other.gameObject.GetComponent<PlayerController>().ScreenShake();
+            
             //Kill bumper
             explosionParticleSystem.Play();
 
@@ -193,6 +201,8 @@ public class Bumper : MonoBehaviour {
             Rigidbody body = GetComponent<Rigidbody>();
             body.velocity = (transform.position - other.GetContact(0).point).normalized * other.rigidbody.velocity.magnitude;
             body.constraints = RigidbodyConstraints.None;
+            
+            audioSource.Play();
         }
     }
 
