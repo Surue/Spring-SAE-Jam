@@ -7,6 +7,7 @@ public class PlayerController : MonoBehaviour
 {
     private CarMovement carMovement;
     private Rigidbody rigidbody;
+    private UIManager uiManager;
     private Material material;
 
     [SerializeField] private float maxLife = 100.0f;
@@ -22,6 +23,7 @@ public class PlayerController : MonoBehaviour
     {
         carMovement = GetComponent<CarMovement>();
         rigidbody = GetComponent<Rigidbody>();
+        uiManager = FindObjectOfType<UIManager>();
         material = GetComponentInChildren<MeshRenderer>().material;
 
 
@@ -34,6 +36,7 @@ public class PlayerController : MonoBehaviour
         float rotationInput = Input.GetAxis("Horizontal");
         float speedInput = Input.GetAxis("Vertical");
         carMovement.Movement(rotationInput, speedInput);
+        uiManager.DisplaySpeed(carMovement.CurrentSpeed/carMovement.MaxSpeed);
     }
 
     void Update()
@@ -57,6 +60,7 @@ public class PlayerController : MonoBehaviour
         {
             GameOver();
         }
+        //Test
         material.SetColor("_Color", Color.Lerp(Color.red, Color.white, currentLife/maxLife));
     }
 
