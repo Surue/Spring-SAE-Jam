@@ -47,4 +47,8 @@ public class CarMovement : MonoBehaviour
         rigidbody.velocity = transform.forward * currentSpeed + Vector3.up*rigidbody.velocity.y;
     }
 
+    public void SetMaxSpeed(float newMaxSpeed)
+    {
+        maxSpeed = newMaxSpeed;
+    }
 }

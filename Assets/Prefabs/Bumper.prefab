@@ -125,7 +125,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slowdown: 5
-  rotationSpeed: 2
+  rotationSpeed: 1.5
   linearSpeed: 3
   maxSpeed: 5
   minSpeed: 0.005
@@ -146,5 +146,12 @@ MonoBehaviour:
   basicSpeed: 5
   preparingDashTimer: 3
   distanceToTarget: 5
-  dashSpeed: 50
-  dashDistance: 7.5
+  dashSpeed: 15
+  dashDistance: 12
+  distanceRayCast: 10
+  offsetRayCast: {x: 0, y: -0.4, z: 0}
+  widenessRayCast: 1
+  iterationRayCast: 2
+  layerMaskRayCast:
+    serializedVersion: 2
+    m_Bits: 256

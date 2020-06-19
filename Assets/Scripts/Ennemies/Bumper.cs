@@ -33,6 +33,13 @@ public class Bumper : MonoBehaviour {
     //Movement
     private float movementAngle = 0;
     private float movementSpeed = 0;
+
+    [Header("RayCast")]
+    [SerializeField] private float distanceRayCast = 10f;
+    [SerializeField] private Vector3 offsetRayCast;
+    [SerializeField][Range(0.0f, 10.0f)] private float widenessRayCast = 1;
+    [SerializeField][Range(0, 10)] private int iterationRayCast = 2;
+    [SerializeField] private LayerMask layerMaskRayCast;
     
     enum State {
         IDLE, //Basic states to wait a few seconds before starting to roll again
@@ -44,8 +51,7 @@ public class Bumper : MonoBehaviour {
     private State state_ = State.MOVE_TO_POSITION;
     
     // Start is called before the first frame update
-    void Start()
-    {
+    void Start() {
         player = FindObjectOfType<PlayerController>().transform;
 
         material = GetComponent<MeshRenderer>().material;
@@ -54,19 +60,19 @@ public class Bumper : MonoBehaviour {
     }
 
     // Update is called once per frame
-    void Update()
-    {
+    void Update() {
         currentTimer += Time.deltaTime;
-        
-        switch (state_)
-        {
+
+        switch (state_) {
             case State.IDLE:
-                
+                movementAngle = 0;
+                movementSpeed = 0;
+
                 //Transition to Move to position
                 if (currentTimer > idleTimer)
                 {
                     //TODO Select position
-                    targetPosition = player.transform.position + player.forward * 5;
+                    targetPosition = player.transform.position + player.forward * distanceToTarget;
 
                     currentTimer = 0;
                     state_ = State.MOVE_TO_POSITION;
@@ -77,14 +83,17 @@ public class Bumper : MonoBehaviour {
             {
                 //TODO Move towards position
                 Vector3 dir = targetPosition - transform.position;
-                movementAngle = Vector2.Angle(new Vector2(dir.x, dir.z),
+                movementAngle = Vector2.SignedAngle(new Vector2(dir.x, dir.z),
                     new Vector2(transform.forward.x, transform.forward.z));
 
                 float distance = Vector2.Distance(
                     new Vector2(transform.position.x, transform.position.z),
-                    new Vector2(targetPosition.x, targetPosition.z));
+                    new Vector2(targetPosition.x, targetPosition.z)
+                    );
 
-                movementSpeed =  Mathf.Clamp01(distance / 5.0f) * basicSpeed;
+                movementSpeed =  Mathf.Pow(Mathf.Clamp01(distance / 5.0f), 2) * basicSpeed;
+                
+                EvaluateObstacleInFront();
 
                 //Transition to Preparing dash
                 if (distance < distanceToStop)
@@ -98,9 +107,8 @@ public class Bumper : MonoBehaviour {
             case State.PREPARING_DASH:
             {
                 //TODO Slowly rotate towards player
-
                 Vector3 dir = player.position - transform.position;
-                movementAngle = Vector2.Angle(new Vector2(dir.x, dir.z),
+                movementAngle = Vector2.SignedAngle(new Vector2(dir.x, dir.z),
                     new Vector2(transform.forward.x, transform.forward.z));
 
                 movementSpeed = 0;
@@ -111,6 +119,7 @@ public class Bumper : MonoBehaviour {
                     currentTimer = 0;
                     material.color = Color.red;
                     state_ = State.DASH;
+                    carMovement.SetMaxSpeed(dashSpeed);
                 }
             }
                 break;
@@ -118,12 +127,15 @@ public class Bumper : MonoBehaviour {
                 //TODO Dash a certain distance
                 movementAngle = 0;
                 movementSpeed = dashSpeed;
+
                 //Transition to idle
                 if (Vector3.Distance(transform.position, targetPosition) > dashDistance)
                 {
                     currentTimer = 0;
                     state_ = State.IDLE;
                     material.color = Color.white;
+                    
+                    carMovement.SetMaxSpeed(basicSpeed);
                 }
                 break;
             default:
@@ -145,8 +157,49 @@ public class Bumper : MonoBehaviour {
         return new Vector3();
     }
 
+    private void OnCollisionEnter(Collision other)
+    {
+        Debug.Log("Collision");
+        //TODO Defines tag or layer
+        if (state_ == State.DASH)
+        {
+            targetPosition = (transform.position - targetPosition).normalized * dashDistance * 2;
+        }
+    }
+
+    void EvaluateObstacleInFront()
+    {
+        Vector3 posRayCast = transform.position + offsetRayCast;
+        Vector3 front = posRayCast + transform.forward * distanceRayCast;
+        
+        Vector3 dir;
+        
+        float maxAngle = 90;
+        
+        for (int i = -iterationRayCast; i <= iterationRayCast; i++)
+        {
+            dir = (front + transform.right * i * widenessRayCast - posRayCast).normalized;
+
+            if ( Physics.Raycast(posRayCast + transform.right * i * 0.25f, dir, out var hitInfo, distanceRayCast, layerMaskRayCast)) {
+                Debug.DrawLine(posRayCast + transform.right * i * 0.25f, hitInfo.point, Color.red);
+                
+                Vector3 targetDir = hitInfo.point - transform.position;
+                
+                float angle = Vector2.SignedAngle(
+                    new Vector2(transform.forward.x, transform.forward.z),
+                    new Vector2(targetDir.x, targetDir.z));
+
+                movementAngle += angle * Mathf.Clamp01(1 -  Mathf.Abs((angle / maxAngle))) * 5;
+            }
+            else
+            {
+                Debug.DrawLine(posRayCast + transform.right * i * 0.25f, posRayCast + dir * distanceRayCast, Color.white);
+            }
+        }
+    }
+    
     private void OnDrawGizmos()
     {
         Gizmos.DrawWireSphere(targetPosition, 0.5f);
-    }
+    } 
 }
