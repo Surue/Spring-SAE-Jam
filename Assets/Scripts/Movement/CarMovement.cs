@@ -27,11 +27,14 @@ public class CarMovement : MonoBehaviour
     {
         if (Math.Abs(speedInput) < minSpeed)
         {
-            if (Math.Abs(currentSpeed) > minSpeed)
+            if (currentSpeed > minSpeed)
             {
                 currentSpeed -= slowdown * Time.fixedDeltaTime;
             }
-            else
+            else if(currentSpeed < minSpeed)
+            {
+                currentSpeed += slowdown * Time.fixedDeltaTime;
+            } else
             {
                 currentSpeed = 0.0f;
             }
@@ -41,6 +44,7 @@ public class CarMovement : MonoBehaviour
         }
         transform.eulerAngles += new Vector3(0, rotationInput, 0) * rotationSpeed * Time.fixedDeltaTime;
         currentSpeed += speedInput * linearSpeed * Time.fixedDeltaTime;
-        rigidbody.velocity = transform.forward * currentSpeed;
+        rigidbody.velocity = transform.forward * currentSpeed + Vector3.up*rigidbody.velocity.y;
     }
+
 }
