@@ -287,7 +287,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 279fd2e5f29a51848950329276d6e87d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  slowdown: 20
+  slowdown: 10
   rotationSpeed: 3
   linearSpeed: 10
   maxSpeed: 25
@@ -314,6 +314,9 @@ MonoBehaviour:
   explosionParticleSystem: {fileID: 3857111524897652216}
   dyingTime: 2.5
   distanceRayCast: 10
+  offsetRayCast: {x: 0, y: -0.4, z: 0}
+  widenessRayCast: 1
+  iterationRayCast: 2
   layerMaskRayCast:
     serializedVersion: 2
     m_Bits: 256

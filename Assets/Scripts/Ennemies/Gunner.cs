@@ -2,26 +2,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
-public class Bumper : MonoBehaviour {
-
+public class Gunner : MonoBehaviour
+{
     [Header("Idle state")] 
     [SerializeField] private float idleTimer = 1.0f;
 
     [Header("Move to position state")] 
     [SerializeField] private float distanceToStop = 0.5f;
     [SerializeField] private float basicSpeed = 5.0f;
-    [SerializeField] private float slowDownDistance = 20.0f;
     private Vector3 targetPosition;
-    
-    [Header("Preparing dash state")] 
-    [SerializeField] private float preparingDashTimer = 5.0f;
-    [SerializeField] private float distanceToTarget = 5.0f;
-
-    [Header("Dash")] 
-    [SerializeField] private float dashSpeed = 5.0f;
-    [SerializeField] private float dashDistance = 7.5f;
 
     [Header("Death")] 
     [SerializeField] private ParticleSystem explosionParticleSystem;
@@ -40,31 +30,31 @@ public class Bumper : MonoBehaviour {
 
     [Header("RayCast")]
     [SerializeField] private float distanceRayCast = 10f;
+    [SerializeField] private Vector3 offsetRayCast;
+    [SerializeField][Range(0.0f, 10.0f)] private float widenessRayCast = 1;
+    [SerializeField][Range(0, 10)] private int iterationRayCast = 2;
     [SerializeField] private LayerMask layerMaskRayCast;
     
     [Header("Rendering")]
     [SerializeField] private MeshRenderer meshRenderer;
     private Material material;
-
+    
     [Header("Audio")] 
     [SerializeField] private AudioSource audioSource;
 
-    [Header("Colliders")] 
-    [SerializeField] private Collider bumperCollider;
-    [SerializeField] private Collider carCollider;
-    
     enum State {
-        IDLE, //Basic states to wait a few seconds before starting to roll again
-        MOVE_TO_POSITION, //The bumper move to a "good" position to run on the player
-        PREPARING_DASH, //The bumper stay still and load its dash. It's still able to slowly rotate
-        DASH, //Dash over a given distance
-        DYING //State to wait final destroy
+        IDLE,
+        MOVE_TO_POSITION,
+        AIM,
+        SHOOT,
+        DYING
     }
 
     private State state_ = State.IDLE;
     
     // Start is called before the first frame update
-    void Start() {
+    void Start()
+    {
         player = FindObjectOfType<PlayerController>().transform;
 
         material = meshRenderer.material;
@@ -73,7 +63,8 @@ public class Bumper : MonoBehaviour {
     }
 
     // Update is called once per frame
-    void Update() {
+    void Update()
+    { 
         currentTimer += Time.deltaTime;
 
         movementVector = Vector2.zero;
@@ -86,7 +77,8 @@ public class Bumper : MonoBehaviour {
                 //Transition to Move to position
                 if (currentTimer > idleTimer)
                 {
-                    targetPosition = FindDashPosition();
+                    //TODO Select position
+                    targetPosition = FindShootPosition();
 
                     currentTimer = 0.0f;
                     state_ = State.MOVE_TO_POSITION;
@@ -104,15 +96,9 @@ public class Bumper : MonoBehaviour {
                     );
 
                 Vector2 force = new Vector2(dir.x, dir.z) * basicSpeed;
-
-                if (distance < slowDownDistance)
-                {
-                    force = Vector2.zero;
-                }
-                
                 Debug.DrawLine(transform.position + Vector3.up, transform.position + Vector3.up + new Vector3(force.x, 0, force.y));
-                
-                movementVector += force;
+                Debug.DrawLine(transform.position, targetPosition, Color.grey);
+                movementVector += (Vector2)force;
                 
                 EvaluateObstacleInFront();
 
@@ -120,44 +106,16 @@ public class Bumper : MonoBehaviour {
                 if (distance < distanceToStop)
                 {
                     currentTimer = 0.0f;
-                    state_ = State.PREPARING_DASH;
+                    state_ = State.AIM;
                     material.color = Color.yellow;
                 }
             }
                 break;
-            case State.PREPARING_DASH:
-            {
-                //TODO Slowly rotate towards player
-                Vector3 dir = player.position - transform.position;
-                movementAngle = Vector2.SignedAngle(new Vector2(dir.x, dir.z),
-                    new Vector2(transform.forward.x, transform.forward.z));
+            case State.AIM:
 
-                movementSpeed = 0.0f;
-
-                //Transition to dash
-                if (currentTimer > preparingDashTimer)
-                {
-                    currentTimer = 0.0f;
-                    material.color = Color.red;
-                    state_ = State.DASH;
-                    carMovement.SetMaxSpeed(dashSpeed);
-                }
-            }
                 break;
-            case State.DASH:
-                //TODO Dash a certain distance
-                movementAngle = 0.0f;
-                movementSpeed = dashSpeed;
-
-                //Transition to idle
-                if (Vector3.Distance(transform.position, targetPosition) > dashDistance)
-                {
-                    currentTimer = 0.0f;
-                    state_ = State.IDLE;
-                    material.color = Color.white;
-                    
-                    carMovement.SetMaxSpeed(basicSpeed);
-                }
+            case State.SHOOT:
+                
                 break;
             case State.DYING:
                 material.color = Color.Lerp(Color.white, Color.clear, currentTimer / dyingTime);
@@ -171,59 +129,7 @@ public class Bumper : MonoBehaviour {
                 throw new ArgumentOutOfRangeException();
         }
     }
-
-    private void FixedUpdate()
-    {
-        if (state_ == State.DYING) return;
-
-        if (movementVector != Vector2.zero)
-        {
-            movementSpeed = movementVector.magnitude;
-            movementAngle = Vector2.SignedAngle(new Vector2(movementVector.x, movementVector.y),
-                new Vector2(transform.forward.x, transform.forward.z));
-            
-            
-        }
-        carMovement.Movement(movementAngle, movementSpeed);
-    }
-
-    /// <summary>
-    /// Find the position from witch it will dash to the player
-    /// </summary>
-    /// <returns></returns>
-    Vector3 FindDashPosition()
-    {
-        return player.transform.position + player.forward * distanceToTarget;
-    }
-
-    private void OnCollisionEnter(Collision other)
-    {
-        if (state_ == State.DASH)
-        {
-            targetPosition = (transform.position - targetPosition).normalized * dashDistance * 2;
-        }
-
-        //If hit player with the car collider => Die
-        if (other.GetContact(0).thisCollider == carCollider && other.gameObject.CompareTag("Player") && state_ != State.DYING)
-        {
-            other.gameObject.GetComponent<PlayerController>().ScreenShake();
-            
-            //Kill bumper
-            explosionParticleSystem.Play();
-
-            state_ = State.DYING;
-
-            currentTimer = 0.0f;
-            
-            Destroy(carMovement);
-            Rigidbody body = GetComponent<Rigidbody>();
-            body.velocity = (transform.position - other.GetContact(0).point).normalized * other.rigidbody.velocity.magnitude;
-            body.constraints = RigidbodyConstraints.None;
-            
-            audioSource.Play();
-        }
-    }
-
+    
     void EvaluateObstacleInFront()
     {
         Vector3 position = transform.position;
@@ -249,9 +155,46 @@ public class Bumper : MonoBehaviour {
             Debug.DrawLine(position + Vector3.up, position + Vector3.up + new Vector3(force.x, 0, force.y));
         }
     }
-    
-    private void OnDrawGizmos()
+
+    private void FixedUpdate()
     {
-        Gizmos.DrawWireSphere(targetPosition, 0.5f);
-    } 
+        if (state_ == State.DYING) return;
+
+        if (movementVector != Vector2.zero)
+        {
+            movementSpeed = movementVector.magnitude;
+            movementAngle = Vector2.SignedAngle(new Vector2(movementVector.x, movementVector.y),
+                new Vector2(transform.forward.x, transform.forward.z));
+            
+            
+        }
+        carMovement.Movement(movementAngle, movementSpeed);
+    }
+
+    Vector3 FindShootPosition()
+    {
+        return player.transform.position + player.GetComponent<Rigidbody>().velocity * 10;
+    }
+    
+    private void OnCollisionEnter(Collision other)
+    {
+        if (other.gameObject.CompareTag("Player") && state_ != State.DYING)
+        {
+            other.gameObject.GetComponent<PlayerController>().ScreenShake();
+            
+            //Kill bumper
+            explosionParticleSystem.Play();
+
+            state_ = State.DYING;
+
+            currentTimer = 0.0f;
+            
+            Destroy(carMovement);
+            Rigidbody body = GetComponent<Rigidbody>();
+            body.velocity = (transform.position - other.GetContact(0).point).normalized * other.rigidbody.velocity.magnitude;
+            body.constraints = RigidbodyConstraints.None;
+            
+            audioSource.Play();
+        }
+    }
 }
