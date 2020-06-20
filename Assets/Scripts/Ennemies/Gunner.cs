@@ -41,11 +41,7 @@ public class Gunner : MonoBehaviour
     [Header("RayCast")]
     [SerializeField] private float distanceRayCast = 10f;
     [SerializeField] private LayerMask layerMaskRayCast;
-    
-    [Header("Rendering")]
-    [SerializeField] private MeshRenderer meshRenderer;
-    private Material material;
-    
+
     [Header("Audio")] 
     [SerializeField] private AudioSource audioSource;
 
@@ -69,8 +65,6 @@ public class Gunner : MonoBehaviour
     void Start()
     {
         player = FindObjectOfType<PlayerController>().transform;
-
-        material = meshRenderer.material;
 
         body = GetComponent<Rigidbody>();
         
@@ -102,7 +96,6 @@ public class Gunner : MonoBehaviour
 
                     currentTimer = 0.0f;
                     state_ = State.GOES_NEAR_PLAYER;
-                    material.color = Color.blue;
                 }
                 break;
             case State.SPAWN_STATE:
@@ -123,7 +116,6 @@ public class Gunner : MonoBehaviour
                 {
                     currentTimer = 0.0f;
                     state_ = State.IDLE;
-                    material.color = Color.yellow;
                 }
             }
                 break;
@@ -145,7 +137,6 @@ public class Gunner : MonoBehaviour
                 {
                     currentTimer = 0.0f;
                     state_ = State.AIM;
-                    material.color = Color.yellow;
                 }
             }
                 break;
@@ -157,7 +148,6 @@ public class Gunner : MonoBehaviour
                 {
                     currentTimer = 0;
                     state_ = State.SHOOT;
-                    material.color = Color.red;
                 }
                 break;
             case State.SHOOT:
@@ -166,17 +156,8 @@ public class Gunner : MonoBehaviour
 
                 state_ = State.IDLE;
                 currentTimer = 0;
-                material.color = Color.white;
                 break;
             case State.DYING:
-                if (Mathf.Sin(currentTimer * 4) - 0.15f * currentTimer + 1> 0)
-                {
-                    meshRenderer.enabled = true;
-                }else {
-                    meshRenderer.enabled = false;
-                }
-                material.color = Color.Lerp(Color.white, Color.clear, currentTimer / dyingTime);
-                
                 if (currentTimer > dyingTime)
                 {
                     Destroy(gameObject);
@@ -221,7 +202,6 @@ public class Gunner : MonoBehaviour
         {
             if (Physics.Raycast(transform.position + Vector3.down * 0.99f, Vector3.down, 0.1f))
             {
-                Debug.Log("Is grounded");
                 body.AddForce(Vector3.up * verticalForceFactor); //Jump force
                 body.AddForce(new Vector3(movementVector.x, 0, movementVector.y) * horizontalForceFactor); //Movement vector
                 
