@@ -13,6 +13,14 @@ public class Gunner : MonoBehaviour
     [SerializeField] private float basicSpeed = 5.0f;
     private Vector3 targetPosition;
 
+    [Header("Shooting")] 
+    [SerializeField] private GameObject prefabProjectile;
+    [SerializeField] private Transform shootingPos;
+
+    [Header("Aim")] 
+    [SerializeField] private float aimingTime = 3;
+    [SerializeField] private Transform gun;
+    
     [Header("Death")] 
     [SerializeField] private ParticleSystem explosionParticleSystem;
     [SerializeField] private float dyingTime = 3.0f;
@@ -113,9 +121,28 @@ public class Gunner : MonoBehaviour
                 break;
             case State.AIM:
 
+                float angle = Vector3.SignedAngle(gun.forward, gun.position - player.position, Vector3.up);
+                
+                gun.forward = (player.position - gun.position).normalized;
+
+                movementAngle = 0;
+                movementSpeed = 0;
+
+                if (currentTimer > aimingTime)
+                {
+                    currentTimer = 0;
+                    state_ = State.SHOOT;
+                    material.color = Color.red;
+                }
                 break;
             case State.SHOOT:
-                
+                GameObject instance = Instantiate(prefabProjectile, shootingPos.position, shootingPos.rotation);
+                instance.GetComponent<Rigidbody>().velocity = instance.transform.forward * 50;
+                // Destroy(instance, 5);
+
+                state_ = State.IDLE;
+                currentTimer = 0;
+                material.color = Color.white;
                 break;
             case State.DYING:
                 material.color = Color.Lerp(Color.white, Color.clear, currentTimer / dyingTime);
@@ -173,7 +200,7 @@ public class Gunner : MonoBehaviour
 
     Vector3 FindShootPosition()
     {
-        return player.transform.position + player.GetComponent<Rigidbody>().velocity * 10;
+        return player.transform.position - player.forward * 10;
     }
     
     private void OnCollisionEnter(Collision other)

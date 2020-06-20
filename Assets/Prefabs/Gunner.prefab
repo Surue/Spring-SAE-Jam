@@ -1,5 +1,35 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &443828614
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 443828615}
+  m_Layer: 0
+  m_Name: ShootingPosition
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &443828615
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 443828614}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0.661}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4945508768993162543}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &711377614
 GameObject:
   m_ObjectHideFlags: 0
@@ -12,7 +42,7 @@ GameObject:
   - component: {fileID: 711377617}
   - component: {fileID: 711377616}
   m_Layer: 0
-  m_Name: Cube
+  m_Name: CarModel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -28,10 +58,9 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 3, y: 1, z: 6}
-  m_Children:
-  - {fileID: 4945508768993162543}
+  m_Children: []
   m_Father: {fileID: 5042185575899429545}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &711377617
 MeshFilter:
@@ -109,7 +138,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 5042185575899429545}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!82 &1976705608
 AudioSource:
@@ -219,9 +248,9 @@ GameObject:
   - component: {fileID: 5042185575899429540}
   - component: {fileID: 5042185575899429541}
   - component: {fileID: 5042185575899429538}
-  - component: {fileID: 5042185575899429539}
+  - component: {fileID: 1957096692}
   m_Layer: 8
-  m_Name: Bumper
+  m_Name: Gunner
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -238,6 +267,7 @@ Transform:
   m_LocalPosition: {x: -10.46, y: 1.08, z: -0.69}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
+  - {fileID: 4945508768993162543}
   - {fileID: 711377615}
   - {fileID: 8128368286944082824}
   - {fileID: 8027573621557214722}
@@ -287,12 +317,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 279fd2e5f29a51848950329276d6e87d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  slowdown: 10
-  rotationSpeed: 3
+  slowdown: 20
+  rotationSpeed: 10
   linearSpeed: 10
   maxSpeed: 25
   minSpeed: 0.005
---- !u!114 &5042185575899429539
+--- !u!114 &1957096692
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -301,20 +331,21 @@ MonoBehaviour:
   m_GameObject: {fileID: 5042185575899429536}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 733fb11db3c76f8a09ba8044f2c18990, type: 3}
+  m_Script: {fileID: 11500000, guid: 420633cff37932151948bd1202a0cbb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   idleTimer: 1
-  distanceToStop: 1
-  basicSpeed: 10
-  preparingDashTimer: 3
-  distanceToTarget: 10
-  dashSpeed: 25
-  dashDistance: 50
+  distanceToStop: 0.5
+  basicSpeed: 5
+  prefabProjectile: {fileID: 6661120579258489880, guid: 5940244f295d9722ab98fbcdbd92b755,
+    type: 3}
+  shootingPos: {fileID: 443828615}
+  aimingTime: 3
+  gun: {fileID: 4945508768993162543}
   explosionParticleSystem: {fileID: 3857111524897652216}
-  dyingTime: 2.5
+  dyingTime: 3
   distanceRayCast: 10
-  offsetRayCast: {x: 0, y: -0.4, z: 0}
+  offsetRayCast: {x: 0, y: 0, z: 0}
   widenessRayCast: 1
   iterationRayCast: 2
   layerMaskRayCast:
@@ -322,8 +353,6 @@ MonoBehaviour:
     m_Bits: 256
   meshRenderer: {fileID: 711377616}
   audioSource: {fileID: 1976705608}
-  bumperCollider: {fileID: 5682505374323891258}
-  carCollider: {fileID: 5042185575899429540}
 --- !u!1 &5654017569351922421
 GameObject:
   m_ObjectHideFlags: 0
@@ -336,9 +365,8 @@ GameObject:
   - component: {fileID: 1671738387343995773}
   - component: {fileID: 8412521015338878783}
   - component: {fileID: 5682505374323891258}
-  - component: {fileID: 1568048122}
   m_Layer: 0
-  m_Name: Cube
+  m_Name: Gun
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -351,13 +379,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5654017569351922421}
-  m_LocalRotation: {x: -0.08459401, y: -0, z: -0, w: 0.9964155}
-  m_LocalPosition: {x: 0.007, y: 0.25, z: 0.546}
-  m_LocalScale: {x: 0.66, y: 1.1, z: 0.1}
-  m_Children: []
-  m_Father: {fileID: 711377615}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.020999908, y: 1.2800001, z: 0.15600002}
+  m_LocalScale: {x: 0.6, y: 0.69, z: 2.34}
+  m_Children:
+  - {fileID: 443828615}
+  m_Father: {fileID: 5042185575899429545}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: -9.705001, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &1671738387343995773
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -416,21 +445,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1.3, y: 0.65, z: 3.09}
+  m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &1568048122
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5654017569351922421}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 840bdc1ab39ae6942af7fb123d312297, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  forceSpeed: 10
 --- !u!1001 &478002143447539140
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -476,7 +492,7 @@ PrefabInstance:
     - target: {fileID: 60959714724403771, guid: c33b55d7fd84cd39a9e3f7fba3021a75,
         type: 3}
       propertyPath: m_RootOrder
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 60959714724403771, guid: c33b55d7fd84cd39a9e3f7fba3021a75,
         type: 3}
@@ -557,7 +573,7 @@ PrefabInstance:
     - target: {fileID: 2101139595086444332, guid: 62f6979e58aaf813b851a93416593d4b,
         type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2101139595086444332, guid: 62f6979e58aaf813b851a93416593d4b,
         type: 3}
@@ -632,7 +648,7 @@ PrefabInstance:
     - target: {fileID: 2101139595086444332, guid: 62f6979e58aaf813b851a93416593d4b,
         type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 2101139595086444332, guid: 62f6979e58aaf813b851a93416593d4b,
         type: 3}
