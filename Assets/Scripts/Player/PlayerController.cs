@@ -20,10 +20,15 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float damageRatio = 0.1f;
     [SerializeField] private float coolDown = 0.1f;
     private float coolDownTimer = 0.0f;
-    [SerializeField] private float amplitudeGain = 10f;
-    [SerializeField] private float frequencyGain = 10f;
+    [SerializeField] private float screenAmplitudeGain = 10f;
+    [SerializeField] private float screenFrequencyGain = 10f;
+    [SerializeField] private float carAmplitudeGain = 5f;
+    [SerializeField] private float carFrequencyGain = 50f;
     [SerializeField] private float screenshakeDuration = 1f;
+    [SerializeField] private float carshakeDuration = 1f;
     private int nbScreenShake = 0;
+    private int nbCarShake = 0;
+    private float carShakeTimer = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -31,7 +36,7 @@ public class PlayerController : MonoBehaviour
         carMovement = GetComponent<CarMovement>();
         rigidbody = GetComponent<Rigidbody>();
         uiManager = FindObjectOfType<UIManager>();
-        vcam = GetComponentInChildren<CinemachineVirtualCamera>();
+        vcam = FindObjectOfType<CinemachineVirtualCamera>();
         noise = vcam.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
         material = GetComponentInChildren<MeshRenderer>().material;
 
@@ -42,22 +47,37 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        float rotationInput = Input.GetAxis("Horizontal");
-        float speedInput = Input.GetAxis("Vertical");
-        carMovement.Movement(rotationInput, speedInput);
-        uiManager.DisplaySpeed(carMovement.CurrentSpeed/carMovement.MaxSpeed);
+        if (GameManager.Instance.CurrentState == GameManager.GameState.GAME)
+        {
+            float rotationInput = Input.GetAxis("Horizontal");
+            float speedInput = Input.GetAxis("Vertical");
+            if (nbCarShake > 0)
+            {
+                carShakeTimer += Time.deltaTime * carFrequencyGain;
+                transform.Rotate(Vector3.forward, Mathf.Sin(carShakeTimer) * carAmplitudeGain);
+            }
+            else
+            {
+                transform.eulerAngles = new Vector3(0, transform.eulerAngles.y, 0);
+                carMovement.Movement(rotationInput, speedInput);
+            }
+            uiManager.DisplaySpeed(carMovement.CurrentSpeed / carMovement.MaxSpeed);
+        }
     }
 
     void Update()
     {
-        coolDownTimer += Time.deltaTime;
-        if (coolDownTimer > coolDown)
+        if (GameManager.Instance.CurrentState == GameManager.GameState.GAME)
         {
-            coolDownTimer = 0.0f;
-            float currentVelocity = rigidbody.velocity.magnitude;
-            if (currentVelocity < velocityBeforeDamage)
+            coolDownTimer += Time.deltaTime;
+            if (coolDownTimer > coolDown)
             {
-                Hit((velocityBeforeDamage - currentVelocity)*damageRatio);
+                coolDownTimer = 0.0f;
+                float currentVelocity = rigidbody.velocity.magnitude;
+                if (currentVelocity < velocityBeforeDamage)
+                {
+                    Hit((velocityBeforeDamage - currentVelocity) * damageRatio);
+                }
             }
         }
     }
@@ -75,13 +95,13 @@ public class PlayerController : MonoBehaviour
 
     void GameOver()
     {
-        //Debug.Log("Game Over");
+        GameManager.Instance.End(false);
     }
 
     public void ScreenShake()
     {
-        noise.m_AmplitudeGain = amplitudeGain;
-        noise.m_FrequencyGain = frequencyGain;
+        noise.m_AmplitudeGain = screenAmplitudeGain;
+        noise.m_FrequencyGain = screenFrequencyGain;
         nbScreenShake++;
         StartCoroutine(StopScreenShake(screenshakeDuration));
     }
@@ -95,6 +115,23 @@ public class PlayerController : MonoBehaviour
             noise.m_FrequencyGain = 0;
         }
         nbScreenShake--;
+    }
+
+    public void CarShake()
+    {
+        nbCarShake++;
+        StartCoroutine(StopCarShake(carshakeDuration));
+    }
+
+    IEnumerator StopCarShake(float seconds)
+    {
+        yield return new WaitForSeconds(seconds);
+        if (nbCarShake == 1)
+        {
+            noise.m_AmplitudeGain = 0;
+            noise.m_FrequencyGain = 0;
+        }
+        nbCarShake--;
     }
 
 }

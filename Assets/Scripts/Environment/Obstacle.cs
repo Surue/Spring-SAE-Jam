@@ -23,10 +23,11 @@ public class Obstacle : MonoBehaviour
         if (other.gameObject.GetComponent<CarMovement>())
         {
             rigidbody.AddForce((transform.position - other.transform.position + Vector3.up) * forceSpeed * other.relativeVelocity.magnitude);
-            other.gameObject.GetComponent<CarMovement>().BumpObstacle();
+            //other.gameObject.GetComponent<CarMovement>().BumpObstacle();
             if (other.gameObject.CompareTag("Player"))
             {
                 other.gameObject.GetComponent<PlayerController>().ScreenShake();
+                other.gameObject.GetComponent<PlayerController>().CarShake();
             }
         }
     }
