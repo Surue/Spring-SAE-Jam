@@ -38,6 +38,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7407727747442454817}
     m_Modifications:
+    - target: {fileID: 1036031693806750344, guid: 5e491dc58448fb54fb938920056a02fd,
+        type: 3}
+      propertyPath: m_ReceiveShadows
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1341792969061397236, guid: 5e491dc58448fb54fb938920056a02fd,
         type: 3}
       propertyPath: m_Name
@@ -96,6 +101,56 @@ PrefabInstance:
     - target: {fileID: 1587007254951688525, guid: 5e491dc58448fb54fb938920056a02fd,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1886819298875567178, guid: 5e491dc58448fb54fb938920056a02fd,
+        type: 3}
+      propertyPath: m_ReceiveShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2932218547934630231, guid: 5e491dc58448fb54fb938920056a02fd,
+        type: 3}
+      propertyPath: m_ReceiveShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3105675292847094668, guid: 5e491dc58448fb54fb938920056a02fd,
+        type: 3}
+      propertyPath: m_ReceiveShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5384365305389760053, guid: 5e491dc58448fb54fb938920056a02fd,
+        type: 3}
+      propertyPath: m_ReceiveShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5516747308232905101, guid: 5e491dc58448fb54fb938920056a02fd,
+        type: 3}
+      propertyPath: m_ReceiveShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5753648411571613079, guid: 5e491dc58448fb54fb938920056a02fd,
+        type: 3}
+      propertyPath: m_ReceiveShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6308480959744501165, guid: 5e491dc58448fb54fb938920056a02fd,
+        type: 3}
+      propertyPath: m_ReceiveShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6512324364382157057, guid: 5e491dc58448fb54fb938920056a02fd,
+        type: 3}
+      propertyPath: m_ReceiveShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8803075834386037115, guid: 5e491dc58448fb54fb938920056a02fd,
+        type: 3}
+      propertyPath: m_ReceiveShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9054933154070967099, guid: 5e491dc58448fb54fb938920056a02fd,
+        type: 3}
+      propertyPath: m_ReceiveShadows
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

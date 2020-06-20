@@ -38,6 +38,36 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 5409341012733966682}
     m_Modifications:
+    - target: {fileID: 390330363959858456, guid: 5c2314d0f492a2e479841d807cd4db67,
+        type: 3}
+      propertyPath: m_ReceiveShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 633857286711554471, guid: 5c2314d0f492a2e479841d807cd4db67,
+        type: 3}
+      propertyPath: m_ReceiveShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 904619820919217045, guid: 5c2314d0f492a2e479841d807cd4db67,
+        type: 3}
+      propertyPath: m_ReceiveShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1646970935073886250, guid: 5c2314d0f492a2e479841d807cd4db67,
+        type: 3}
+      propertyPath: m_ReceiveShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2806643950321644398, guid: 5c2314d0f492a2e479841d807cd4db67,
+        type: 3}
+      propertyPath: m_ReceiveShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2874772465421541790, guid: 5c2314d0f492a2e479841d807cd4db67,
+        type: 3}
+      propertyPath: m_ReceiveShadows
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2915626085468361687, guid: 5c2314d0f492a2e479841d807cd4db67,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -93,10 +123,40 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4029326247375779603, guid: 5c2314d0f492a2e479841d807cd4db67,
+        type: 3}
+      propertyPath: m_ReceiveShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4218104077175466813, guid: 5c2314d0f492a2e479841d807cd4db67,
+        type: 3}
+      propertyPath: m_ReceiveShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5593469678332725736, guid: 5c2314d0f492a2e479841d807cd4db67,
+        type: 3}
+      propertyPath: m_ReceiveShadows
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7444127040554684349, guid: 5c2314d0f492a2e479841d807cd4db67,
         type: 3}
       propertyPath: m_Name
       value: Foule4
+      objectReference: {fileID: 0}
+    - target: {fileID: 7519649489263446259, guid: 5c2314d0f492a2e479841d807cd4db67,
+        type: 3}
+      propertyPath: m_ReceiveShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8580082360491851914, guid: 5c2314d0f492a2e479841d807cd4db67,
+        type: 3}
+      propertyPath: m_ReceiveShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8931325508662550606, guid: 5c2314d0f492a2e479841d807cd4db67,
+        type: 3}
+      propertyPath: m_ReceiveShadows
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5c2314d0f492a2e479841d807cd4db67, type: 3}
