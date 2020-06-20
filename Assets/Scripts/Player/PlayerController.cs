@@ -8,7 +8,7 @@ public class PlayerController : MonoBehaviour
 {
     private CarMovement carMovement;
     private Rigidbody rigidbody;
-    private UIManager uiManager;
+    private GameUIManager gameUiManager;
     private Material material;
     private CinemachineVirtualCamera vcam;
     private CinemachineBasicMultiChannelPerlin noise;
@@ -37,13 +37,12 @@ public class PlayerController : MonoBehaviour
     {
         carMovement = GetComponent<CarMovement>();
         rigidbody = GetComponent<Rigidbody>();
-        uiManager = FindObjectOfType<UIManager>();
+        gameUiManager = FindObjectOfType<UIManager>().GameUiManager;
         vcam = FindObjectOfType<CinemachineVirtualCamera>();
         noise = vcam.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
         material = GetComponentInChildren<MeshRenderer>().material;
-
-
         currentLife = maxLife;
+        gameUiManager.DisplayLife(maxLife, currentLife);
     }
 
     // Update is called once per frame
@@ -63,7 +62,8 @@ public class PlayerController : MonoBehaviour
                 transform.eulerAngles = new Vector3(0, transform.eulerAngles.y, 0);
                 carMovement.Movement(rotationInput, speedInput);
             }
-            uiManager.DisplaySpeed(carMovement.CurrentSpeed / carMovement.MaxSpeed);
+            gameUiManager.DisplaySpeed(carMovement.CurrentSpeed / carMovement.MaxSpeed);
+            gameUiManager.DisplayLife(maxLife, currentLife);
         }
     }
 
