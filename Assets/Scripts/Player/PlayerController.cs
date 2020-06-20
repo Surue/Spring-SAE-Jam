@@ -12,6 +12,14 @@ public class PlayerController : MonoBehaviour
     private Material material;
     private CinemachineVirtualCamera vcam;
     private CinemachineBasicMultiChannelPerlin noise;
+    [SerializeField] private float initScreenAmplitudeGain = 10f;
+    [SerializeField] private float initScreenFrequencyGain = 10f;
+    [SerializeField] private float initScreenshakeDuration = 1f;
+    [SerializeField] private float initCarAmplitudeGain = 5f;
+    [SerializeField] private float initCarFrequencyGain = 50f;
+    [SerializeField] private float initCarshakeDuration = 1f;
+    private float currentCarAmplitudeGain = 5f;
+    private float currentCarFrequencyGain = 50f;
 
     [SerializeField] private float maxLife = 100.0f;
     private float currentLife;
@@ -20,12 +28,6 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float damageRatio = 0.1f;
     [SerializeField] private float coolDown = 0.1f;
     private float coolDownTimer = 0.0f;
-    [SerializeField] private float screenAmplitudeGain = 10f;
-    [SerializeField] private float screenFrequencyGain = 10f;
-    [SerializeField] private float carAmplitudeGain = 5f;
-    [SerializeField] private float carFrequencyGain = 50f;
-    [SerializeField] private float screenshakeDuration = 1f;
-    [SerializeField] private float carshakeDuration = 1f;
     private int nbScreenShake = 0;
     private int nbCarShake = 0;
     private float carShakeTimer = 0;
@@ -53,8 +55,8 @@ public class PlayerController : MonoBehaviour
             float speedInput = Input.GetAxis("Vertical");
             if (nbCarShake > 0)
             {
-                carShakeTimer += Time.deltaTime * carFrequencyGain;
-                transform.Rotate(Vector3.forward, Mathf.Sin(carShakeTimer) * carAmplitudeGain);
+                carShakeTimer += Time.deltaTime * currentCarFrequencyGain;
+                transform.Rotate(Vector3.forward, Mathf.Sin(carShakeTimer) * currentCarAmplitudeGain);
             }
             else
             {
@@ -98,12 +100,35 @@ public class PlayerController : MonoBehaviour
         GameManager.Instance.End(false);
     }
 
-    public void ScreenShake()
+    public void ScreenShake(float screenAmplitudeGain = 0.0f, float screenFrequencyGain = 0.0f, float screenshakeDuration = 0.0f)
     {
-        noise.m_AmplitudeGain = screenAmplitudeGain;
-        noise.m_FrequencyGain = screenFrequencyGain;
         nbScreenShake++;
-        StartCoroutine(StopScreenShake(screenshakeDuration));
+        if (screenAmplitudeGain == 0.0f)
+        {
+            noise.m_AmplitudeGain = initScreenAmplitudeGain;
+        }
+        else
+        {
+            noise.m_AmplitudeGain = screenAmplitudeGain;
+        }
+
+        if (screenFrequencyGain == 0.0f)
+        {
+            noise.m_FrequencyGain = initScreenFrequencyGain;
+        }
+        else
+        {
+            noise.m_FrequencyGain = screenFrequencyGain;
+        }
+
+        if (screenshakeDuration == 0.0f)
+        {
+            StartCoroutine(StopScreenShake(initScreenshakeDuration));
+        }
+        else
+        {
+            StartCoroutine(StopScreenShake(screenshakeDuration));
+        }
     }
 
     IEnumerator StopScreenShake(float seconds)
@@ -117,10 +142,33 @@ public class PlayerController : MonoBehaviour
         nbScreenShake--;
     }
 
-    public void CarShake()
+    public void CarShake(float carAmplitudeGain, float carFrequencyGain, float carShakeDuration)
     {
-        nbCarShake++;
-        StartCoroutine(StopCarShake(carshakeDuration));
+        nbCarShake++; 
+        if (carAmplitudeGain == 0.0f)
+        {
+            currentCarAmplitudeGain = initCarAmplitudeGain;
+        } else
+        {
+            currentCarAmplitudeGain = carAmplitudeGain;
+        }
+
+        if (carFrequencyGain == 0.0f)
+        {
+            currentCarFrequencyGain = initCarFrequencyGain;
+        } else
+        {
+            currentCarFrequencyGain = carFrequencyGain;
+        }
+
+        if (carShakeDuration == 0.0f)
+        {
+            StartCoroutine(StopCarShake(initScreenshakeDuration));
+        }
+        else
+        {
+            StartCoroutine(StopCarShake(carShakeDuration));
+        }
     }
 
     IEnumerator StopCarShake(float seconds)
