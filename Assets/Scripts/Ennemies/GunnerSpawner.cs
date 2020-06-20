@@ -54,7 +54,6 @@ public class GunnerSpawner : MonoBehaviour
         GameObject parent = other.transform.parent.gameObject;
         if (parent.CompareTag("Enemy") && spawnedGunner.Contains(parent))
         {
-            Debug.Log("Trigger");
             parent.GetComponent<Rigidbody>().velocity = Vector3.zero;
             parent.GetComponent<Rigidbody>().AddForce(parent.transform.forward*gunnerWidthJump+ Vector3.up * gunnerHeightJump);
             spawnedGunner.Remove(parent);
