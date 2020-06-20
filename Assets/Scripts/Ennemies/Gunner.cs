@@ -8,14 +8,13 @@ public class Gunner : MonoBehaviour
     [Header("Idle state")] 
     [SerializeField] private float idleTimer = 1.0f;
 
-    [Header("Move to position state")] 
-    [SerializeField] private float distanceToStop = 0.5f;
-    [SerializeField] private float basicSpeed = 5.0f;
-    private Vector3 targetPosition;
+    [Header("Goes near player")] 
+    [SerializeField] private float minDistanceFromPlayer = 30;
 
     [Header("Shooting")] 
     [SerializeField] private GameObject prefabProjectile;
     [SerializeField] private Transform shootingPos;
+    [SerializeField] private float firingSpeed = 50;
 
     [Header("Aim")] 
     [SerializeField] private float aimingTime = 3;
@@ -30,17 +29,13 @@ public class Gunner : MonoBehaviour
     private float currentTimer = 0;
 
     //Movement
-    private float movementAngle = 0;
-    private float movementSpeed = 0;
     private Vector2 movementVector;
-    
-    private CarMovement carMovement;
+    [Header("Force")] 
+    [SerializeField] private float horizontalForceFactor = 10;
+    [SerializeField] private float verticalForceFactor = 150;
 
     [Header("RayCast")]
     [SerializeField] private float distanceRayCast = 10f;
-    [SerializeField] private Vector3 offsetRayCast;
-    [SerializeField][Range(0.0f, 10.0f)] private float widenessRayCast = 1;
-    [SerializeField][Range(0, 10)] private int iterationRayCast = 2;
     [SerializeField] private LayerMask layerMaskRayCast;
     
     [Header("Rendering")]
@@ -52,13 +47,15 @@ public class Gunner : MonoBehaviour
 
     enum State {
         IDLE,
-        MOVE_TO_POSITION,
+        GOES_NEAR_PLAYER,
         AIM,
         SHOOT,
         DYING
     }
 
     private State state_ = State.IDLE;
+
+    private Rigidbody body;
     
     // Start is called before the first frame update
     void Start()
@@ -67,7 +64,7 @@ public class Gunner : MonoBehaviour
 
         material = meshRenderer.material;
 
-        carMovement = GetComponent<CarMovement>();
+        body = GetComponent<Rigidbody>();
     }
 
     // Update is called once per frame
@@ -79,39 +76,30 @@ public class Gunner : MonoBehaviour
 
         switch (state_) {
             case State.IDLE:
-                movementAngle = 0.0f;
-                movementSpeed = 0.0f;
-
                 //Transition to Move to position
                 if (currentTimer > idleTimer)
                 {
-                    //TODO Select position
-                    targetPosition = FindShootPosition();
 
                     currentTimer = 0.0f;
-                    state_ = State.MOVE_TO_POSITION;
+                    state_ = State.GOES_NEAR_PLAYER;
                     material.color = Color.blue;
                 }
                 break;
-            case State.MOVE_TO_POSITION:
+            case State.GOES_NEAR_PLAYER:
             {
-                //TODO Move towards position
-                Vector3 dir = (targetPosition - transform.position).normalized;
-                
+                Vector3 dir = (player.position - transform.position).normalized;
+
                 float distance = Vector2.Distance(
                     new Vector2(transform.position.x, transform.position.z),
-                    new Vector2(targetPosition.x, targetPosition.z)
+                    new Vector2(player.position.x, player.position.z)
                     );
 
-                Vector2 force = new Vector2(dir.x, dir.z) * basicSpeed;
-                Debug.DrawLine(transform.position + Vector3.up, transform.position + Vector3.up + new Vector3(force.x, 0, force.y));
-                Debug.DrawLine(transform.position, targetPosition, Color.grey);
-                movementVector += (Vector2)force;
-                
+                Vector2 force = new Vector2(dir.x, dir.z);
+                movementVector += force;
                 EvaluateObstacleInFront();
 
                 //Transition to Preparing dash
-                if (distance < distanceToStop)
+                if (distance < minDistanceFromPlayer)
                 {
                     currentTimer = 0.0f;
                     state_ = State.AIM;
@@ -120,13 +108,8 @@ public class Gunner : MonoBehaviour
             }
                 break;
             case State.AIM:
-
-                float angle = Vector3.SignedAngle(gun.forward, gun.position - player.position, Vector3.up);
-                
                 gun.forward = (player.position - gun.position).normalized;
-
-                movementAngle = 0;
-                movementSpeed = 0;
+                transform.forward = gun.forward;
 
                 if (currentTimer > aimingTime)
                 {
@@ -137,14 +120,19 @@ public class Gunner : MonoBehaviour
                 break;
             case State.SHOOT:
                 GameObject instance = Instantiate(prefabProjectile, shootingPos.position, shootingPos.rotation);
-                instance.GetComponent<Rigidbody>().velocity = instance.transform.forward * 50;
-                // Destroy(instance, 5);
+                instance.GetComponent<Rigidbody>().velocity = instance.transform.forward * firingSpeed;
 
                 state_ = State.IDLE;
                 currentTimer = 0;
                 material.color = Color.white;
                 break;
             case State.DYING:
+                if (Mathf.Sin(currentTimer * 4) - 0.15f * currentTimer + 1> 0)
+                {
+                    meshRenderer.enabled = true;
+                }else {
+                    meshRenderer.enabled = false;
+                }
                 material.color = Color.Lerp(Color.white, Color.clear, currentTimer / dyingTime);
                 
                 if (currentTimer > dyingTime)
@@ -162,9 +150,9 @@ public class Gunner : MonoBehaviour
         Vector3 position = transform.position;
         Vector3 forward = transform.forward;
 
-        BoxCastDrawer.DrawBoxCastBox(position + forward * 2, new Vector3(2, 1, 1), transform.rotation, forward, distanceRayCast, Color.blue);
+        BoxCastDrawer.DrawBoxCastBox(new Vector3(position.x, 0, position.z) + forward * 2, new Vector3(2, 1, 1), transform.rotation, forward, distanceRayCast, Color.blue);
 
-        if (Physics.BoxCast(position + forward * 2, new Vector3(2, 1, 1), forward, out RaycastHit hitInfo, transform.rotation, distanceRayCast, layerMaskRayCast))
+        if (Physics.BoxCast(new Vector3(position.x, 0, position.z) + forward * 2, new Vector3(2, 1, 1), forward, out RaycastHit hitInfo, transform.rotation, distanceRayCast, layerMaskRayCast))
         {
             Vector3 targetDir = hitInfo.transform.position - position;
             Vector2 force;
@@ -189,18 +177,21 @@ public class Gunner : MonoBehaviour
 
         if (movementVector != Vector2.zero)
         {
-            movementSpeed = movementVector.magnitude;
-            movementAngle = Vector2.SignedAngle(new Vector2(movementVector.x, movementVector.y),
-                new Vector2(transform.forward.x, transform.forward.z));
-            
-            
-        }
-        carMovement.Movement(movementAngle, movementSpeed);
-    }
+            if (Physics.Raycast(transform.position + Vector3.down * 0.99f, Vector3.down, 0.1f))
+            {
+                Debug.Log("Is grounded");
+                body.AddForce(Vector3.up * verticalForceFactor); //Jump force
+                body.AddForce(new Vector3(movementVector.x, 0, movementVector.y) * horizontalForceFactor); //Movement vector
+                
+                transform.forward = new Vector3(movementVector.x, 0, movementVector.y);
+                gun.forward = new Vector3(movementVector.x, 0, movementVector.y);
+            }
 
-    Vector3 FindShootPosition()
-    {
-        return player.transform.position - player.forward * 10;
+            if (body.velocity.y < 0)
+            {
+                body.velocity = new Vector3(body.velocity.x, body.velocity.y * 1.05f, body.velocity.z);
+            }
+        }
     }
     
     private void OnCollisionEnter(Collision other)
@@ -216,8 +207,6 @@ public class Gunner : MonoBehaviour
 
             currentTimer = 0.0f;
             
-            Destroy(carMovement);
-            Rigidbody body = GetComponent<Rigidbody>();
             body.velocity = (transform.position - other.GetContact(0).point).normalized * other.rigidbody.velocity.magnitude;
             body.constraints = RigidbodyConstraints.None;
             

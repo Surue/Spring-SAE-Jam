@@ -5,7 +5,9 @@ using UnityEngine;
 
 public class Projectile : MonoBehaviour {
     [SerializeField] private float maxLifeTime = 5;
-
+    [SerializeField] private GameObject model;
+    [SerializeField] private ParticleSystem explosionParticle;
+    
     private float lifeTime = 0;
     
     void Update()
@@ -23,7 +25,10 @@ public class Projectile : MonoBehaviour {
         //Check to don't touch self
         if (lifeTime > 0.1f)
         {
-            Destroy(gameObject);
+            explosionParticle.Play();
+            Destroy(gameObject, explosionParticle.main.duration);
+            Destroy(GetComponent<Rigidbody>());
+            Destroy(model);
         }
 
     }
