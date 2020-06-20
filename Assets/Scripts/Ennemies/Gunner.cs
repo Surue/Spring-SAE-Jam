@@ -46,6 +46,7 @@ public class Gunner : MonoBehaviour
     [SerializeField] private AudioSource audioSource;
 
     enum State {
+        PAUSE,
         IDLE,
         GOES_NEAR_PLAYER,
         AIM,
@@ -54,6 +55,7 @@ public class Gunner : MonoBehaviour
     }
 
     private State state_ = State.IDLE;
+    private State previousState_ = State.IDLE;
 
     private Rigidbody body;
     
@@ -65,6 +67,12 @@ public class Gunner : MonoBehaviour
         material = meshRenderer.material;
 
         body = GetComponent<Rigidbody>();
+        
+        if (GameManager.Instance.CurrentState == GameManager.GameState.START)
+        {
+            previousState_ = state_;
+            state_ = State.PAUSE;
+        }
     }
 
     // Update is called once per frame
@@ -75,6 +83,12 @@ public class Gunner : MonoBehaviour
         movementVector = Vector2.zero;
 
         switch (state_) {
+            case State.PAUSE:
+                if (GameManager.Instance.CurrentState != GameManager.GameState.START)
+                {
+                    state_ = previousState_;
+                }
+                break;
             case State.IDLE:
                 //Transition to Move to position
                 if (currentTimer > idleTimer)

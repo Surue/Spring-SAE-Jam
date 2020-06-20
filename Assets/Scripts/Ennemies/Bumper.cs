@@ -54,6 +54,7 @@ public class Bumper : MonoBehaviour {
     [SerializeField] private Collider carCollider;
     
     enum State {
+        PAUSE,
         IDLE, //Basic states to wait a few seconds before starting to roll again
         MOVE_TO_POSITION, //The bumper move to a "good" position to run on the player
         PREPARING_DASH, //The bumper stay still and load its dash. It's still able to slowly rotate
@@ -62,6 +63,7 @@ public class Bumper : MonoBehaviour {
     }
 
     private State state_ = State.IDLE;
+    private State previousState_ = State.IDLE;
     
     // Start is called before the first frame update
     void Start() {
@@ -70,6 +72,12 @@ public class Bumper : MonoBehaviour {
         material = meshRenderer.material;
 
         carMovement = GetComponent<CarMovement>();
+
+        if (GameManager.Instance.CurrentState == GameManager.GameState.START)
+        {
+            previousState_ = state_;
+            state_ = State.PAUSE;
+        }
     }
 
     // Update is called once per frame
@@ -79,6 +87,12 @@ public class Bumper : MonoBehaviour {
         movementVector = Vector2.zero;
 
         switch (state_) {
+            case State.PAUSE:
+                if (GameManager.Instance.CurrentState != GameManager.GameState.START)
+                {
+                    state_ = previousState_;
+                }
+                break;
             case State.IDLE:
                 movementAngle = 0.0f;
                 movementSpeed = 0.0f;
