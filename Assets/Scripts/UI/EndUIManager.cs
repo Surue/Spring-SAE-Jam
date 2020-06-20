@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class EndManager : MonoBehaviour
+public class EndUIManager : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI endTextMesh;
+    [SerializeField] private TextMeshProUGUI scoreTextMesh;
     // Start is called before the first frame update
     void Start()
     {
@@ -27,5 +28,6 @@ public class EndManager : MonoBehaviour
         {
             endTextMesh.text = "Loose";
         }
+        scoreTextMesh.text = "Your score : " + Time.timeSinceLevelLoad;
     }
 }
