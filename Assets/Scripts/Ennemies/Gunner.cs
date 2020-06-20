@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class Gunner : MonoBehaviour
 {
@@ -44,6 +45,9 @@ public class Gunner : MonoBehaviour
 
     [Header("Audio")] 
     [SerializeField] private AudioSource audioSource;
+
+    [SerializeField] private AudioClip shotGunClip;
+    [SerializeField] private AudioClip deathSound;
 
     enum State
     {
@@ -154,6 +158,10 @@ public class Gunner : MonoBehaviour
                 GameObject instance = Instantiate(prefabProjectile, shootingPos.position, shootingPos.rotation);
                 instance.GetComponent<Rigidbody>().velocity = instance.transform.forward * firingSpeed;
 
+                audioSource.clip = shotGunClip;
+                audioSource.pitch = Random.Range(0.9f, 1.1f);
+                audioSource.Play();
+                
                 state_ = State.IDLE;
                 currentTimer = 0;
                 break;
@@ -231,7 +239,8 @@ public class Gunner : MonoBehaviour
             
             body.velocity = (transform.position - other.GetContact(0).point).normalized * other.rigidbody.velocity.magnitude;
             body.constraints = RigidbodyConstraints.None;
-            
+
+            audioSource.clip = deathSound;
             audioSource.Play();
         }
     }

@@ -666,15 +666,16 @@ MonoBehaviour:
   aimingTime: 3
   gun: {fileID: 4945508768993162543}
   explosionParticleSystem: {fileID: 3857111524897652216}
-  dyingTime: 3
+  dyingTime: 10
   horizontalForceFactor: 75
   verticalForceFactor: 150
   distanceRayCast: 5
   layerMaskRayCast:
     serializedVersion: 2
     m_Bits: 256
-  meshRenderer: {fileID: 0}
   audioSource: {fileID: 1976705608}
+  shotGunClip: {fileID: 8300000, guid: b0946228b432de571b2dafb1f8ec6df3, type: 3}
+  deathSound: {fileID: 8300000, guid: eee950020b7b88ba5b5c5404fe8c75c0, type: 3}
 --- !u!1 &5654017569351922421
 GameObject:
   m_ObjectHideFlags: 0

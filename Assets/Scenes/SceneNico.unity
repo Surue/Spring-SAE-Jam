@@ -2080,10 +2080,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1957096692, guid: de6c049338d2a196395eab1b614755c8, type: 3}
-      propertyPath: dyingTime
-      value: 10
-      objectReference: {fileID: 0}
     - target: {fileID: 5042185575899429536, guid: de6c049338d2a196395eab1b614755c8,
         type: 3}
       propertyPath: m_Name
