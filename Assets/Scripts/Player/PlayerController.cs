@@ -22,8 +22,8 @@ public class PlayerController : MonoBehaviour
     private float coolDownTimer = 0.0f;
     [SerializeField] private float screenAmplitudeGain = 10f;
     [SerializeField] private float screenFrequencyGain = 10f;
-    [SerializeField] private float carAmplitudeGain = 10f;
-    [SerializeField] private float carFrequencyGain = 10f;
+    [SerializeField] private float carAmplitudeGain = 5f;
+    [SerializeField] private float carFrequencyGain = 50f;
     [SerializeField] private float screenshakeDuration = 1f;
     [SerializeField] private float carshakeDuration = 1f;
     private int nbScreenShake = 0;
@@ -47,31 +47,37 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        float rotationInput = Input.GetAxis("Horizontal");
-        float speedInput = Input.GetAxis("Vertical");
-        if (nbCarShake > 0)
+        if (GameManager.Instance.CurrentState == GameManager.GameState.GAME)
         {
-            carShakeTimer += Time.deltaTime * carFrequencyGain;
-            transform.Rotate(Vector3.forward, Mathf.Sin(carShakeTimer) * carAmplitudeGain);
+            float rotationInput = Input.GetAxis("Horizontal");
+            float speedInput = Input.GetAxis("Vertical");
+            if (nbCarShake > 0)
+            {
+                carShakeTimer += Time.deltaTime * carFrequencyGain;
+                transform.Rotate(Vector3.forward, Mathf.Sin(carShakeTimer) * carAmplitudeGain);
+            }
+            else
+            {
+                transform.eulerAngles = new Vector3(0, transform.eulerAngles.y, 0);
+                carMovement.Movement(rotationInput, speedInput);
+            }
+            uiManager.DisplaySpeed(carMovement.CurrentSpeed / carMovement.MaxSpeed);
         }
-        else
-        {
-            transform.eulerAngles = new Vector3(0, transform.eulerAngles.y, 0);
-            carMovement.Movement(rotationInput, speedInput);
-        }
-        uiManager.DisplaySpeed(carMovement.CurrentSpeed/carMovement.MaxSpeed);
     }
 
     void Update()
     {
-        coolDownTimer += Time.deltaTime;
-        if (coolDownTimer > coolDown)
+        if (GameManager.Instance.CurrentState == GameManager.GameState.GAME)
         {
-            coolDownTimer = 0.0f;
-            float currentVelocity = rigidbody.velocity.magnitude;
-            if (currentVelocity < velocityBeforeDamage)
+            coolDownTimer += Time.deltaTime;
+            if (coolDownTimer > coolDown)
             {
-                Hit((velocityBeforeDamage - currentVelocity)*damageRatio);
+                coolDownTimer = 0.0f;
+                float currentVelocity = rigidbody.velocity.magnitude;
+                if (currentVelocity < velocityBeforeDamage)
+                {
+                    Hit((velocityBeforeDamage - currentVelocity) * damageRatio);
+                }
             }
         }
     }
@@ -89,7 +95,7 @@ public class PlayerController : MonoBehaviour
 
     void GameOver()
     {
-        //Debug.Log("Game Over");
+        GameManager.Instance.End(false);
     }
 
     public void ScreenShake()
