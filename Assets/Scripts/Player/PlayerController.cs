@@ -75,7 +75,7 @@ public class PlayerController : MonoBehaviour
 
     void GameOver()
     {
-        Debug.Log("Game Over");
+        //Debug.Log("Game Over");
     }
 
     public void ScreenShake()
