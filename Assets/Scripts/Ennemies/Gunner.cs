@@ -27,6 +27,8 @@ public class Gunner : MonoBehaviour
     [Header("Death")] 
     [SerializeField] private ParticleSystem explosionParticleSystem;
     [SerializeField] private float dyingTime = 3.0f;
+    [SerializeField] private List<GameObject> smallParts;
+    [SerializeField] private Collider mainCollider;
     
     private Transform player;
     private Transform enterPoint;
@@ -242,6 +244,14 @@ public class Gunner : MonoBehaviour
 
             audioSource.clip = deathSound;
             audioSource.Play();
+
+            foreach (var smallPart in smallParts)
+            {
+                smallPart.GetComponent<BoxCollider>().enabled = true;
+                smallPart.AddComponent<Rigidbody>();
+            }
+            
+            Destroy(mainCollider);
         }
     }
 

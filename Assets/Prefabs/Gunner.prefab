@@ -210,6 +210,7 @@ GameObject:
   - component: {fileID: 7511061067326462218}
   - component: {fileID: 2853514966644492943}
   - component: {fileID: 7895529829438374017}
+  - component: {fileID: 2047225961}
   m_Layer: 0
   m_Name: msh_hat_007
   m_TagString: Untagged
@@ -278,6 +279,19 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!65 &2047225961
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1883602745256009587}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 0
+  serializedVersion: 2
+  m_Size: {x: 1.0394086, y: 1.5256518, z: 1.3605461}
+  m_Center: {x: 6.658807e-11, y: 0.004466743, z: 0.7081418}
 --- !u!1 &2262013735179382597
 GameObject:
   m_ObjectHideFlags: 0
@@ -289,6 +303,7 @@ GameObject:
   - component: {fileID: 7660507626694939953}
   - component: {fileID: 6999766696571412522}
   - component: {fileID: 7510380810987930405}
+  - component: {fileID: 1498934475}
   m_Layer: 0
   m_Name: msh_scarf_01
   m_TagString: Untagged
@@ -357,6 +372,19 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!65 &1498934475
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2262013735179382597}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 0
+  serializedVersion: 2
+  m_Size: {x: 0.6294103, y: 0.1493105, z: 0.39857295}
+  m_Center: {x: 0, y: -0.055215314, z: 0.1992863}
 --- !u!1 &2593253660427481186
 GameObject:
   m_ObjectHideFlags: 0
@@ -368,6 +396,7 @@ GameObject:
   - component: {fileID: 4637722428615526180}
   - component: {fileID: 129475069341049409}
   - component: {fileID: 6344839873543228043}
+  - component: {fileID: 1771599744}
   m_Layer: 0
   m_Name: msh_vest_003
   m_TagString: Untagged
@@ -436,6 +465,19 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!65 &1771599744
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2593253660427481186}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 0
+  serializedVersion: 2
+  m_Size: {x: 1.0938518, y: 1.018187, z: 0.42729592}
+  m_Center: {x: -0.000005036811, y: -0.014684413, z: -0.09817485}
 --- !u!1 &3180014021483638355
 GameObject:
   m_ObjectHideFlags: 0
@@ -478,6 +520,7 @@ GameObject:
   - component: {fileID: 869976556900727687}
   - component: {fileID: 4171888601868667757}
   - component: {fileID: 8850565620693998962}
+  - component: {fileID: 963866880}
   m_Layer: 0
   m_Name: msh_hand_007
   m_TagString: Untagged
@@ -546,6 +589,19 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!65 &963866880
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3229180798588112340}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 0
+  serializedVersion: 2
+  m_Size: {x: 0.52141786, y: 0.59705293, z: 0.39794055}
+  m_Center: {x: -0.026443612, y: -0.0055889767, z: 0.15729679}
 --- !u!1 &4549779023595778775
 GameObject:
   m_ObjectHideFlags: 0
@@ -667,6 +723,19 @@ MonoBehaviour:
   gun: {fileID: 4945508768993162543}
   explosionParticleSystem: {fileID: 3857111524897652216}
   dyingTime: 10
+  smallParts:
+  - {fileID: 8207996267173803583}
+  - {fileID: 8779751652209579859}
+  - {fileID: 5989810963768494460}
+  - {fileID: 3229180798588112340}
+  - {fileID: 1883602745256009587}
+  - {fileID: 8235015208955654081}
+  - {fileID: 8308979908146919904}
+  - {fileID: 7286105860331926653}
+  - {fileID: 2262013735179382597}
+  - {fileID: 7759573211057766432}
+  - {fileID: 6582873630748903503}
+  - {fileID: 2593253660427481186}
   horizontalForceFactor: 75
   verticalForceFactor: 150
   distanceRayCast: 5
@@ -781,6 +850,7 @@ GameObject:
   - component: {fileID: 9159925415737055734}
   - component: {fileID: 6704130130512834398}
   - component: {fileID: 2561550266366297803}
+  - component: {fileID: 1778028054}
   m_Layer: 0
   m_Name: msh_hand_006
   m_TagString: Untagged
@@ -849,6 +919,19 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!65 &1778028054
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5989810963768494460}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 0
+  serializedVersion: 2
+  m_Size: {x: 0.65436864, y: 0.6626721, z: 0.3470169}
+  m_Center: {x: -0.086675875, y: 0.027226318, z: 0.022164537}
 --- !u!1 &6582873630748903503
 GameObject:
   m_ObjectHideFlags: 0
@@ -860,6 +943,7 @@ GameObject:
   - component: {fileID: 3986527940621544115}
   - component: {fileID: 4676486763169306704}
   - component: {fileID: 8069135584493407348}
+  - component: {fileID: 1083501914}
   m_Layer: 0
   m_Name: msh_sunglasses_002
   m_TagString: Untagged
@@ -928,6 +1012,19 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!65 &1083501914
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6582873630748903503}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 0
+  serializedVersion: 2
+  m_Size: {x: 0.5333688, y: 0.20347552, z: 0.056048173}
+  m_Center: {x: -0.005425989, y: -0.03518892, z: -0.0000000018626456}
 --- !u!1 &7286105860331926653
 GameObject:
   m_ObjectHideFlags: 0
@@ -939,6 +1036,7 @@ GameObject:
   - component: {fileID: 668926319340090686}
   - component: {fileID: 1678025696246373886}
   - component: {fileID: 3483336661222425855}
+  - component: {fileID: 1068835626}
   m_Layer: 0
   m_Name: msh_potato_gun_01
   m_TagString: Untagged
@@ -1007,6 +1105,19 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!65 &1068835626
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7286105860331926653}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 0
+  serializedVersion: 2
+  m_Size: {x: 0.2915264, y: 0.6284991, z: 1.314645}
+  m_Center: {x: -0.0000000023214408, y: 0.16848637, z: -0.0886798}
 --- !u!1 &7759573211057766432
 GameObject:
   m_ObjectHideFlags: 0
@@ -1018,6 +1129,7 @@ GameObject:
   - component: {fileID: 3088595374274047264}
   - component: {fileID: 7832996477151344179}
   - component: {fileID: 1910870713107456596}
+  - component: {fileID: 1097756065}
   m_Layer: 0
   m_Name: msh_shirt_002
   m_TagString: Untagged
@@ -1086,6 +1198,19 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!65 &1097756065
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7759573211057766432}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 0
+  serializedVersion: 2
+  m_Size: {x: 1.1379479, y: 1.1391547, z: 0.61381745}
+  m_Center: {x: -2.4367514e-10, y: -0.016350899, z: 0.33737993}
 --- !u!1 &8207996267173803583
 GameObject:
   m_ObjectHideFlags: 0
@@ -1097,6 +1222,7 @@ GameObject:
   - component: {fileID: 8171163550027530633}
   - component: {fileID: 1195205467868167663}
   - component: {fileID: 503913086092556807}
+  - component: {fileID: 970323231}
   m_Layer: 0
   m_Name: msh_eyebrows_005
   m_TagString: Untagged
@@ -1165,6 +1291,19 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!65 &970323231
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8207996267173803583}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 0
+  serializedVersion: 2
+  m_Size: {x: 0.25016505, y: 0.05500786, z: 0.15228009}
+  m_Center: {x: -0.009114869, y: 0.014198035, z: -0.013258665}
 --- !u!1 &8235015208955654081
 GameObject:
   m_ObjectHideFlags: 0
@@ -1176,6 +1315,7 @@ GameObject:
   - component: {fileID: 8981363471823729760}
   - component: {fileID: 3560936022396801663}
   - component: {fileID: 2383213114942030302}
+  - component: {fileID: 596862507}
   m_Layer: 0
   m_Name: msh_moustache_003
   m_TagString: Untagged
@@ -1244,6 +1384,19 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!65 &596862507
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8235015208955654081}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 0
+  serializedVersion: 2
+  m_Size: {x: 0.92535186, y: 0.30094972, z: 0.064394474}
+  m_Center: {x: 0.09454825, y: -0.03539504, z: 0.032197222}
 --- !u!1 &8308979908146919904
 GameObject:
   m_ObjectHideFlags: 0
@@ -1255,6 +1408,7 @@ GameObject:
   - component: {fileID: 8411555842743222882}
   - component: {fileID: 7479341253439473898}
   - component: {fileID: 6277985959341083107}
+  - component: {fileID: 358654237}
   m_Layer: 0
   m_Name: msh_potato_002
   m_TagString: Untagged
@@ -1323,6 +1477,19 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!65 &358654237
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8308979908146919904}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 0
+  serializedVersion: 2
+  m_Size: {x: 1.0588323, y: 1.0111973, z: 1.4088544}
+  m_Center: {x: -0.0000038146973, y: 0.0000019073486, z: 0.74999976}
 --- !u!1 &8779751652209579859
 GameObject:
   m_ObjectHideFlags: 0
@@ -1334,6 +1501,7 @@ GameObject:
   - component: {fileID: 5009350528268768708}
   - component: {fileID: 4201288262878196295}
   - component: {fileID: 2938203333571131598}
+  - component: {fileID: 103621493}
   m_Layer: 0
   m_Name: msh_eyebrows_006
   m_TagString: Untagged
@@ -1402,6 +1570,19 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!65 &103621493
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8779751652209579859}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 0
+  serializedVersion: 2
+  m_Size: {x: 0.2501651, y: 0.05500786, z: 0.15228008}
+  m_Center: {x: -0.0000018551946, y: -0.000000005587937, z: -0.00000021606684}
 --- !u!1001 &478002143447539140
 PrefabInstance:
   m_ObjectHideFlags: 0
