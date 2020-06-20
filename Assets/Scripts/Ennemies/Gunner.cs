@@ -5,6 +5,9 @@ using UnityEngine;
 
 public class Gunner : MonoBehaviour
 {
+    [Header("Spawn state")]
+    [SerializeField] private float minDistanceFromEnter = 1.0f;
+
     [Header("Idle state")] 
     [SerializeField] private float idleTimer = 1.0f;
 
@@ -25,6 +28,7 @@ public class Gunner : MonoBehaviour
     [SerializeField] private float dyingTime = 3.0f;
     
     private Transform player;
+    private Transform enterPoint;
 
     private float currentTimer = 0;
 
@@ -45,7 +49,9 @@ public class Gunner : MonoBehaviour
     [Header("Audio")] 
     [SerializeField] private AudioSource audioSource;
 
-    enum State {
+    enum State
+    {
+        SPAWN_STATE,
         PAUSE,
         IDLE,
         GOES_NEAR_PLAYER,
@@ -99,6 +105,28 @@ public class Gunner : MonoBehaviour
                     material.color = Color.blue;
                 }
                 break;
+            case State.SPAWN_STATE:
+            {
+                Vector3 dir = (enterPoint.position - transform.position).normalized;
+
+                float distance = Vector2.Distance(
+                    new Vector2(transform.position.x, transform.position.z),
+                    new Vector2(enterPoint.position.x, enterPoint.position.z)
+                    );
+
+                Vector2 force = new Vector2(dir.x, dir.z);
+                movementVector += force;
+                //EvaluateObstacleInFront();
+
+                //Transition to Preparing dash
+                if (distance < minDistanceFromEnter)
+                {
+                    currentTimer = 0.0f;
+                    state_ = State.IDLE;
+                    material.color = Color.yellow;
+                }
+            }
+                break;
             case State.GOES_NEAR_PLAYER:
             {
                 Vector3 dir = (player.position - transform.position).normalized;
@@ -106,7 +134,7 @@ public class Gunner : MonoBehaviour
                 float distance = Vector2.Distance(
                     new Vector2(transform.position.x, transform.position.z),
                     new Vector2(player.position.x, player.position.z)
-                    );
+                );
 
                 Vector2 force = new Vector2(dir.x, dir.z);
                 movementVector += force;
@@ -226,5 +254,11 @@ public class Gunner : MonoBehaviour
             
             audioSource.Play();
         }
+    }
+
+    public void SetEnterPoint(Transform enterPoint)
+    {
+        this.enterPoint = enterPoint;
+        state_ = State.SPAWN_STATE;
     }
 }

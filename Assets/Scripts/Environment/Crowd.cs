@@ -4,12 +4,14 @@ using UnityEngine;
 
 public class Crowd : MonoBehaviour
 {
-    [SerializeField] private GameObject crowdPrefab;
+    const int nbBleach = 10;
+    const int maxPeopleColums = nbBleach * 50;
+    [SerializeField] private GameObject[] crowdPrefab;
     [SerializeField] private Transform[] blechersPos;
     [SerializeField] private Transform[] relativeStepPos;
-    [SerializeField] private int peoplePerStep = 14;
-    private List<GameObject>[] prefab = new List<GameObject>[10*15];
-    private List<Vector3>[] prefabPosition = new List<Vector3>[10*15];
+    [SerializeField] private int peoplePerStep = 10;
+    private List<GameObject>[] prefab = new List<GameObject>[maxPeopleColums];
+    private List<Vector3>[] prefabPosition = new List<Vector3>[maxPeopleColums];
     [SerializeField] private float waveSpeed = 5.0f;
     [SerializeField] private float jumpSpeed = 5.0f;
     [SerializeField] private float jumpHeight = 5.0f;
@@ -28,11 +30,13 @@ public class Crowd : MonoBehaviour
                     prefab[Mathf.FloorToInt(rowsPos * peoplePerStep + i)] = new List<GameObject>();
                     prefabPosition[Mathf.FloorToInt(rowsPos * peoplePerStep + i)] = new List<Vector3>();
                 }
-                for (int j = 0; j < relativeStepPos.Length; j++) {
-                    Vector3 vector = new Vector3(Mathf.Lerp(-relativeStepPos[j].localPosition.x, relativeStepPos[j].localPosition.x, i / peoplePerStep), relativeStepPos[j].localPosition.y, relativeStepPos[j].localPosition.z);
+                for (int j = 0; j < relativeStepPos.Length; j++)
+                {
+                    float stepShifting = (j % 2.0f)/2.0f + 0.25f;
+                    Vector3 vector = new Vector3(Mathf.Lerp(-relativeStepPos[j].localPosition.x, relativeStepPos[j].localPosition.x, (i +stepShifting)/ peoplePerStep), relativeStepPos[j].localPosition.y, relativeStepPos[j].localPosition.z);
                     vector = blechersPos[b].transform.rotation * vector;
                     vector += blechersPos[b].position;
-                    GameObject people = Instantiate(crowdPrefab, vector, Quaternion.identity, transform);
+                    GameObject people = Instantiate(crowdPrefab[Random.Range(0, crowdPrefab.Length)], vector, blechersPos[b].transform.rotation * Quaternion.Euler(0, 180, 0), blechersPos[b].transform);
                     if (b % 8 == 0 || b % 8 == 7 || b % 2 == 0)
                     {
                         prefab[Mathf.FloorToInt(rowsPos * peoplePerStep + i)].Add(people);
@@ -56,7 +60,7 @@ public class Crowd : MonoBehaviour
     {
         if (waveLaunch)
         {
-            for (int i = 0; i < 10 * peoplePerStep; i++)
+            for (int i = 0; i < nbBleach * peoplePerStep; i++)
             {
                 for (int j = 0; j < prefab[i].Count; j++)
                 {
@@ -78,7 +82,7 @@ public class Crowd : MonoBehaviour
             }
         } else
         {
-            for (int i = 0; i < 10 * peoplePerStep; i++)
+            for (int i = 0; i < nbBleach * peoplePerStep; i++)
             {
                 for (int j = 0; j < prefab[i].Count; j++)
                 {

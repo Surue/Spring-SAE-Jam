@@ -171,7 +171,7 @@ GameObject:
   - component: {fileID: 960988090792619165}
   m_Layer: 8
   m_Name: Capsule
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -264,7 +264,7 @@ GameObject:
   - component: {fileID: 1957096692}
   m_Layer: 8
   m_Name: Gunner
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -320,6 +320,7 @@ MonoBehaviour:
   prefabProjectile: {fileID: 6661120579258489880, guid: 5940244f295d9722ab98fbcdbd92b755,
     type: 3}
   shootingPos: {fileID: 443828615}
+  firingSpeed: 50
   aimingTime: 3
   gun: {fileID: 4945508768993162543}
   explosionParticleSystem: {fileID: 3857111524897652216}
@@ -495,15 +496,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c33b55d7fd84cd39a9e3f7fba3021a75, type: 3}
---- !u!198 &3857111524897652216 stripped
-ParticleSystem:
-  m_CorrespondingSourceObject: {fileID: 3685354156178415676, guid: c33b55d7fd84cd39a9e3f7fba3021a75,
-    type: 3}
-  m_PrefabInstance: {fileID: 478002143447539140}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &466869005942065151 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 60959714724403771, guid: c33b55d7fd84cd39a9e3f7fba3021a75,
+    type: 3}
+  m_PrefabInstance: {fileID: 478002143447539140}
+  m_PrefabAsset: {fileID: 0}
+--- !u!198 &3857111524897652216 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 3685354156178415676, guid: c33b55d7fd84cd39a9e3f7fba3021a75,
     type: 3}
   m_PrefabInstance: {fileID: 478002143447539140}
   m_PrefabAsset: {fileID: 0}
