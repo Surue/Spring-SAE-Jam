@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -19,6 +20,7 @@ public class Gunner : MonoBehaviour
     [SerializeField] private GameObject prefabProjectile;
     [SerializeField] private Transform shootingPos;
     [SerializeField] private float firingSpeed = 50;
+    [SerializeField] private GameObject haloObject;
 
     [Header("Aim")] 
     [SerializeField] private float aimingTime = 3;
@@ -166,6 +168,8 @@ public class Gunner : MonoBehaviour
                 
                 state_ = State.IDLE;
                 currentTimer = 0;
+
+                StartCoroutine(GunBlinking());
                 break;
             case State.DYING:
                 if (currentTimer > dyingTime)
@@ -176,8 +180,26 @@ public class Gunner : MonoBehaviour
             default:
                 throw new ArgumentOutOfRangeException();
         }
+        
+        // SerializedObject halo = new SerializedObject(haloObject.GetComponent("Halo"));
+        // halo.FindProperty("m_Size").floatValue = 1;
+        // halo.FindProperty("m_Enabled").boolValue = true;
+        // halo.FindProperty("m_Color").colorValue = Color.green;
+        // halo.ApplyModifiedProperties();
     }
-    
+
+    IEnumerator GunBlinking()
+    {
+        SerializedObject halo = new SerializedObject(haloObject.GetComponent("Halo"));
+
+        halo.FindProperty("m_Size").floatValue = 2.0f;
+        halo.ApplyModifiedProperties();
+        yield return new WaitForSeconds(0.1f);
+        
+        halo.FindProperty("m_Size").floatValue = 0.0f;
+        halo.ApplyModifiedProperties();
+    }
+
     void EvaluateObstacleInFront()
     {
         Vector3 position = transform.position;

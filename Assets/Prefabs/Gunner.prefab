@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 443828615}
+  - component: {fileID: 1047107838}
   m_Layer: 0
   m_Name: ShootingPosition
   m_TagString: Untagged
@@ -30,6 +31,18 @@ Transform:
   m_Father: {fileID: 4945508768993162543}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!122 &1047107838
+Halo:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 443828614}
+  m_Enabled: 1
+  m_Color:
+    serializedVersion: 2
+    rgba: 4278237425
+  m_Size: 0
 --- !u!1 &1976705606
 GameObject:
   m_ObjectHideFlags: 0
@@ -211,7 +224,7 @@ GameObject:
   - component: {fileID: 2853514966644492943}
   - component: {fileID: 7895529829438374017}
   - component: {fileID: 2047225961}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: msh_hat_007
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -304,7 +317,7 @@ GameObject:
   - component: {fileID: 6999766696571412522}
   - component: {fileID: 7510380810987930405}
   - component: {fileID: 1498934475}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: msh_scarf_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -397,7 +410,7 @@ GameObject:
   - component: {fileID: 129475069341049409}
   - component: {fileID: 6344839873543228043}
   - component: {fileID: 1771599744}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: msh_vest_003
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -521,7 +534,7 @@ GameObject:
   - component: {fileID: 4171888601868667757}
   - component: {fileID: 8850565620693998962}
   - component: {fileID: 963866880}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: msh_hand_007
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -719,6 +732,7 @@ MonoBehaviour:
     type: 3}
   shootingPos: {fileID: 443828615}
   firingSpeed: 50
+  haloObject: {fileID: 443828614}
   aimingTime: 3
   gun: {fileID: 4945508768993162543}
   explosionParticleSystem: {fileID: 3857111524897652216}
@@ -736,6 +750,7 @@ MonoBehaviour:
   - {fileID: 7759573211057766432}
   - {fileID: 6582873630748903503}
   - {fileID: 2593253660427481186}
+  mainCollider: {fileID: 0}
   horizontalForceFactor: 75
   verticalForceFactor: 150
   distanceRayCast: 5
@@ -754,9 +769,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4945508768993162543}
-  - component: {fileID: 1671738387343995773}
-  - component: {fileID: 8412521015338878783}
-  - component: {fileID: 5682505374323891258}
   m_Layer: 0
   m_Name: Gun
   m_TagString: Untagged
@@ -779,66 +791,6 @@ Transform:
   m_Father: {fileID: 5042185575899429545}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &1671738387343995773
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5654017569351922421}
-  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!23 &8412521015338878783
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5654017569351922421}
-  m_Enabled: 0
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 2
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
---- !u!65 &5682505374323891258
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5654017569351922421}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &5989810963768494460
 GameObject:
   m_ObjectHideFlags: 0
@@ -851,7 +803,7 @@ GameObject:
   - component: {fileID: 6704130130512834398}
   - component: {fileID: 2561550266366297803}
   - component: {fileID: 1778028054}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: msh_hand_006
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -944,7 +896,7 @@ GameObject:
   - component: {fileID: 4676486763169306704}
   - component: {fileID: 8069135584493407348}
   - component: {fileID: 1083501914}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: msh_sunglasses_002
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1037,7 +989,7 @@ GameObject:
   - component: {fileID: 1678025696246373886}
   - component: {fileID: 3483336661222425855}
   - component: {fileID: 1068835626}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: msh_potato_gun_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1130,7 +1082,7 @@ GameObject:
   - component: {fileID: 7832996477151344179}
   - component: {fileID: 1910870713107456596}
   - component: {fileID: 1097756065}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: msh_shirt_002
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1223,7 +1175,7 @@ GameObject:
   - component: {fileID: 1195205467868167663}
   - component: {fileID: 503913086092556807}
   - component: {fileID: 970323231}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: msh_eyebrows_005
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1316,7 +1268,7 @@ GameObject:
   - component: {fileID: 3560936022396801663}
   - component: {fileID: 2383213114942030302}
   - component: {fileID: 596862507}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: msh_moustache_003
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1409,7 +1361,7 @@ GameObject:
   - component: {fileID: 7479341253439473898}
   - component: {fileID: 6277985959341083107}
   - component: {fileID: 358654237}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: msh_potato_002
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1502,7 +1454,7 @@ GameObject:
   - component: {fileID: 4201288262878196295}
   - component: {fileID: 2938203333571131598}
   - component: {fileID: 103621493}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: msh_eyebrows_006
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1652,15 +1604,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c33b55d7fd84cd39a9e3f7fba3021a75, type: 3}
---- !u!4 &466869005942065151 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 60959714724403771, guid: c33b55d7fd84cd39a9e3f7fba3021a75,
-    type: 3}
-  m_PrefabInstance: {fileID: 478002143447539140}
-  m_PrefabAsset: {fileID: 0}
 --- !u!198 &3857111524897652216 stripped
 ParticleSystem:
   m_CorrespondingSourceObject: {fileID: 3685354156178415676, guid: c33b55d7fd84cd39a9e3f7fba3021a75,
+    type: 3}
+  m_PrefabInstance: {fileID: 478002143447539140}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &466869005942065151 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 60959714724403771, guid: c33b55d7fd84cd39a9e3f7fba3021a75,
     type: 3}
   m_PrefabInstance: {fileID: 478002143447539140}
   m_PrefabAsset: {fileID: 0}
