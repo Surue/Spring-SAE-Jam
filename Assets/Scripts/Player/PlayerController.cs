@@ -20,10 +20,15 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float damageRatio = 0.1f;
     [SerializeField] private float coolDown = 0.1f;
     private float coolDownTimer = 0.0f;
-    [SerializeField] private float amplitudeGain = 10f;
-    [SerializeField] private float frequencyGain = 10f;
+    [SerializeField] private float screenAmplitudeGain = 10f;
+    [SerializeField] private float screenFrequencyGain = 10f;
+    [SerializeField] private float carAmplitudeGain = 10f;
+    [SerializeField] private float carFrequencyGain = 10f;
     [SerializeField] private float screenshakeDuration = 1f;
+    [SerializeField] private float carshakeDuration = 1f;
     private int nbScreenShake = 0;
+    private int nbCarShake = 0;
+    private float carShakeTimer = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -31,7 +36,7 @@ public class PlayerController : MonoBehaviour
         carMovement = GetComponent<CarMovement>();
         rigidbody = GetComponent<Rigidbody>();
         uiManager = FindObjectOfType<UIManager>();
-        vcam = GetComponentInChildren<CinemachineVirtualCamera>();
+        vcam = FindObjectOfType<CinemachineVirtualCamera>();
         noise = vcam.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
         material = GetComponentInChildren<MeshRenderer>().material;
 
@@ -44,7 +49,16 @@ public class PlayerController : MonoBehaviour
     {
         float rotationInput = Input.GetAxis("Horizontal");
         float speedInput = Input.GetAxis("Vertical");
-        carMovement.Movement(rotationInput, speedInput);
+        if (nbCarShake > 0)
+        {
+            carShakeTimer += Time.deltaTime * carFrequencyGain;
+            transform.Rotate(Vector3.forward, Mathf.Sin(carShakeTimer) * carAmplitudeGain);
+        }
+        else
+        {
+            transform.eulerAngles = new Vector3(0, transform.eulerAngles.y, 0);
+            carMovement.Movement(rotationInput, speedInput);
+        }
         uiManager.DisplaySpeed(carMovement.CurrentSpeed/carMovement.MaxSpeed);
     }
 
@@ -80,8 +94,8 @@ public class PlayerController : MonoBehaviour
 
     public void ScreenShake()
     {
-        noise.m_AmplitudeGain = amplitudeGain;
-        noise.m_FrequencyGain = frequencyGain;
+        noise.m_AmplitudeGain = screenAmplitudeGain;
+        noise.m_FrequencyGain = screenFrequencyGain;
         nbScreenShake++;
         StartCoroutine(StopScreenShake(screenshakeDuration));
     }
@@ -95,6 +109,23 @@ public class PlayerController : MonoBehaviour
             noise.m_FrequencyGain = 0;
         }
         nbScreenShake--;
+    }
+
+    public void CarShake()
+    {
+        nbCarShake++;
+        StartCoroutine(StopCarShake(carshakeDuration));
+    }
+
+    IEnumerator StopCarShake(float seconds)
+    {
+        yield return new WaitForSeconds(seconds);
+        if (nbCarShake == 1)
+        {
+            noise.m_AmplitudeGain = 0;
+            noise.m_FrequencyGain = 0;
+        }
+        nbCarShake--;
     }
 
 }
