@@ -26,6 +26,7 @@ public class Bumper : MonoBehaviour {
     [Header("Death")] 
     [SerializeField] private ParticleSystem explosionParticleSystem;
     [SerializeField] private float dyingTime = 3.0f;
+    [SerializeField] private List<GameObject> smallParts;
     
     private Transform player;
 
@@ -41,10 +42,6 @@ public class Bumper : MonoBehaviour {
     [Header("RayCast")]
     [SerializeField] private float distanceRayCast = 10f;
     [SerializeField] private LayerMask layerMaskRayCast;
-    
-    [Header("Rendering")]
-    [SerializeField] private MeshRenderer meshRenderer;
-    private Material material;
 
     [Header("Audio")] 
     [SerializeField] private AudioSource audioSource;
@@ -68,8 +65,6 @@ public class Bumper : MonoBehaviour {
     // Start is called before the first frame update
     void Start() {
         player = FindObjectOfType<PlayerController>().transform;
-
-        material = meshRenderer.material;
 
         carMovement = GetComponent<CarMovement>();
 
@@ -104,7 +99,6 @@ public class Bumper : MonoBehaviour {
 
                     currentTimer = 0.0f;
                     state_ = State.MOVE_TO_POSITION;
-                    material.color = Color.blue;
                 }
                 break;
             case State.MOVE_TO_POSITION:
@@ -135,7 +129,6 @@ public class Bumper : MonoBehaviour {
                 {
                     currentTimer = 0.0f;
                     state_ = State.PREPARING_DASH;
-                    material.color = Color.yellow;
                 }
             }
                 break;
@@ -152,7 +145,6 @@ public class Bumper : MonoBehaviour {
                 if (currentTimer > preparingDashTimer)
                 {
                     currentTimer = 0.0f;
-                    material.color = Color.red;
                     state_ = State.DASH;
                     carMovement.SetMaxSpeed(dashSpeed);
                 }
@@ -168,14 +160,11 @@ public class Bumper : MonoBehaviour {
                 {
                     currentTimer = 0.0f;
                     state_ = State.IDLE;
-                    material.color = Color.white;
                     
                     carMovement.SetMaxSpeed(basicSpeed);
                 }
                 break;
             case State.DYING:
-                material.color = Color.Lerp(Color.white, Color.clear, currentTimer / dyingTime);
-                
                 if (currentTimer > dyingTime)
                 {
                     Destroy(gameObject);
@@ -233,6 +222,15 @@ public class Bumper : MonoBehaviour {
             Rigidbody body = GetComponent<Rigidbody>();
             body.velocity = (transform.position - other.GetContact(0).point).normalized * other.rigidbody.velocity.magnitude;
             body.constraints = RigidbodyConstraints.None;
+
+            foreach (var smallPart in smallParts)
+            {
+                smallPart.GetComponent<BoxCollider>().enabled = true;
+                smallPart.AddComponent<Rigidbody>();
+            }
+            
+            Destroy(carCollider);
+            Destroy(bumperCollider);
             
             audioSource.Play();
         }
