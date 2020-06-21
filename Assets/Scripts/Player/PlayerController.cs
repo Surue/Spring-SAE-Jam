@@ -24,7 +24,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float maxLife = 100.0f;
     private float currentLife;
 
-    [SerializeField] private float velocityBeforeDamage = 10f;
+    [SerializeField] private float velocityBeforeHeal = 10f;
     [SerializeField] private float damageRatio = 0.1f;
     [SerializeField] private float coolDown = 0.1f;
     private float coolDownTimer = 0.0f;
@@ -76,9 +76,9 @@ public class PlayerController : MonoBehaviour
             {
                 coolDownTimer = 0.0f;
                 float currentVelocity = rigidbody.velocity.magnitude;
-                if (currentVelocity < velocityBeforeDamage)
+                if (currentVelocity > velocityBeforeHeal)
                 {
-                    Hit((velocityBeforeDamage - currentVelocity) * damageRatio);
+                    Hit(-damageRatio);
                 }
             }
         }
@@ -90,6 +90,9 @@ public class PlayerController : MonoBehaviour
         if (currentLife < 0.0f)
         {
             GameOver();
+        } else if (currentLife > maxLife)
+        {
+            currentLife = maxLife;
         }
         //Test
         material.SetColor("_Color", Color.Lerp(Color.red, Color.white, currentLife/maxLife));

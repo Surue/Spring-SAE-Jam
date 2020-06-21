@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GunnerSpawner : MonoBehaviour
 {
-    [SerializeField] private GameObject gunnerPrefab;
+    [SerializeField] private GameObject[] gunnerPrefab;
 
     [SerializeField] private Transform[] spawnPoint;
     [SerializeField] private Transform[] enterPoint;
@@ -30,7 +30,7 @@ public class GunnerSpawner : MonoBehaviour
     public void SpawnGunner()
     {
         int enterPointIndex = Random.Range(0, enterPoint.Length);
-        GameObject gunner = Instantiate(gunnerPrefab, spawnPoint[enterPointIndex].position, Quaternion.identity, transform);
+        GameObject gunner = Instantiate(gunnerPrefab[Random.Range(0, gunnerPrefab.Length)], spawnPoint[enterPointIndex].position, Quaternion.identity, transform);
         gunner.transform.LookAt(new Vector3(enterPoint[enterPointIndex].position.x, gunner.transform.position.y, enterPoint[enterPointIndex].position.z));
         gunner.GetComponent<Gunner>().SetEnterPoint(enterPoint[enterPointIndex]);
         spawnedGunner.Add(gunner);

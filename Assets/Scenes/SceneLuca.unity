@@ -196,8 +196,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87dabfa7f25f01340b4baf3ad981d533, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gunnerPrefab: {fileID: 5042185575899429536, guid: de6c049338d2a196395eab1b614755c8,
-    type: 3}
+  gunnerPrefab:
+  - {fileID: 5042185575899429536, guid: de6c049338d2a196395eab1b614755c8, type: 3}
+  - {fileID: 3093351192025652438, guid: 75c26415b9fd504479549ed6bfe35341, type: 3}
+  - {fileID: 7161279597827463866, guid: 0aca5ebb18b1e444caa2c84cd5dea8bd, type: 3}
   spawnPoint:
   - {fileID: 1586486061}
   - {fileID: 1514633404}
@@ -1477,15 +1479,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   timeBeforeGunners: 0
   gunnerStartSpawnRate: 0.1
-  increaseGunnerSpawnRate: 0.0001
-  timeBeforeBumpers: 10
+  increaseGunnerSpawnRate: 0.01
+  timeBeforeBumpers: 30
   bumperStartSpawnRate: 0.1
-  increaseBumperSpawnRate: 0.0001
-  timeBeforeMonsterTrucks: 20
-  monsterTruckStartSpawnRate: 0.1
+  increaseBumperSpawnRate: 0.001
+  timeBeforeMonsterTrucks: 60
+  monsterTruckStartSpawnRate: 0.05
   increaseMonsterTruckSpawnRate: 0
-  timeBeforeCows: 30
-  cowStartSpawnRate: 0.1
+  timeBeforeCows: 90
+  cowStartSpawnRate: 0.05
   increaseCowSpawnRate: 0
 --- !u!65 &375550616
 BoxCollider:
@@ -9026,6 +9028,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 3346155927596662344, guid: 48e25c35cb863da499f329fdc3014a53,
+        type: 3}
+      propertyPath: damageRatio
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 3346155927596662345, guid: 48e25c35cb863da499f329fdc3014a53,
         type: 3}
