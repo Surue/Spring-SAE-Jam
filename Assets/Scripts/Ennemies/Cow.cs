@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class Cow : MonoBehaviour
 {
@@ -8,7 +9,17 @@ public class Cow : MonoBehaviour
     [Header("Idle state")] 
     [SerializeField] private float idleTimer = 1.0f;
 
+    [Header("Rotate towards player")]
     [SerializeField] private float distanceToPlayer = 30;
+
+    [Header("Milking at player")] 
+    [SerializeField] private GameObject prefabMilkDroplet;
+    [SerializeField] private float minTimeBetweenShoot = 1;
+    [SerializeField] private float maxTimeBetweenShoot = 1;
+    private float shootingTimer = 0;
+    [SerializeField] private List<Transform> shootingPosition;
+    [SerializeField] private float minForce = 5;
+    [SerializeField] private float maxForce = 5;
     
     [Header("Death")] 
     // [SerializeField] private ParticleSystem explosionParticleSystem;
@@ -74,11 +85,29 @@ public class Cow : MonoBehaviour
                 if (Vector3.Distance(transform.position, player.position) < distanceToPlayer)
                 {
                     state_ = State.MILK_AT_PLAYER;
+
+                    shootingTimer = Random.Range(minTimeBetweenShoot, maxTimeBetweenShoot);
                 }
                 break;
             case State.MILK_AT_PLAYER:
+                shootingTimer -= Time.deltaTime;
+                if (shootingTimer <= 0)
+                {
+                    int index = Random.Range(0, shootingPosition.Count);
+                    
+                    GameObject instance = Instantiate(prefabMilkDroplet,
+                        shootingPosition[index].position, Quaternion.identity);
 
-                state_ = State.ROTATE_TOWARDS_PLAYER;
+                    instance.GetComponent<Rigidbody>().velocity = shootingPosition[index].forward * Random.Range(minForce, maxForce);
+                    shootingTimer = 0;
+                    
+                    shootingTimer = Random.Range(minTimeBetweenShoot, maxTimeBetweenShoot);
+                }
+                
+                if (Vector3.Distance(transform.position, player.position) > distanceToPlayer)
+                {
+                    state_ = State.MILK_AT_PLAYER;
+                }
                 break;
             case State.DYING:
                 if (currentTimer > dyingTime)
@@ -113,5 +142,17 @@ public class Cow : MonoBehaviour
             
             audioSource.Play();
         }
+    }
+
+    private void OnDrawGizmos()
+    {
+        if (shootingPosition == null) return;
+        foreach (var transform1 in shootingPosition)
+        {
+            Gizmos.DrawWireSphere(transform1.position, 0.25f);
+            Gizmos.DrawLine(transform1.position, transform1.position + transform1.forward);
+        }
+        
+        Gizmos.DrawWireSphere(transform.position, distanceToPlayer);
     }
 }
