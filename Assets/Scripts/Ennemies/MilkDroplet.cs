@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class MilkDroplet : MonoBehaviour {
 
@@ -10,6 +11,9 @@ public class MilkDroplet : MonoBehaviour {
     private Collider collider;
 
     [SerializeField] private float invulnerabilityTime;
+
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip dropletClip;
     // Start is called before the first frame update
     void Start()
     {
@@ -32,11 +36,13 @@ public class MilkDroplet : MonoBehaviour {
 
     private void OnCollisionEnter(Collision other)
     {
+        audioSource.pitch = Random.Range(0.8f, 0.9f);
+        audioSource.clip = dropletClip;
+        audioSource.Play();
+        
         explosionParticles.Play();
         Destroy(GetComponent<MeshRenderer>());
         Destroy(GetComponent<TrailRenderer>());
         Destroy(gameObject, explosionParticles.main.duration);
-        
-        Debug.Log("milk pop");
     }
 }

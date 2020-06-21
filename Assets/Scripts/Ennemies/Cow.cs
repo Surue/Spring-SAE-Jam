@@ -106,7 +106,7 @@ public class Cow : MonoBehaviour
                 
                 if (Vector3.Distance(transform.position, player.position) > distanceToPlayer)
                 {
-                    state_ = State.MILK_AT_PLAYER;
+                    state_ = State.ROTATE_TOWARDS_PLAYER;
                 }
                 break;
             case State.DYING:
