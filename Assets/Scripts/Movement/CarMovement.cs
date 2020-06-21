@@ -56,7 +56,9 @@ public class CarMovement : MonoBehaviour
         }
         transform.eulerAngles += new Vector3(0, rotationInput, 0) * rotationSpeed * Time.fixedDeltaTime;
         currentSpeed += speedInput * linearSpeed * Time.fixedDeltaTime;
-        rigidbody.velocity = transform.forward * currentSpeed + Vector3.up*rigidbody.velocity.y;
+
+        Vector3 forward = new Vector3(transform.forward.x, 0, transform.forward.z);
+        rigidbody.velocity = forward * currentSpeed + Vector3.up*rigidbody.velocity.y;
     }
     
     public void SetMaxSpeed(float newMaxSpeed)
