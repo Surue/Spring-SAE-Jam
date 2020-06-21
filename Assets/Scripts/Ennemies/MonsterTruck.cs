@@ -42,6 +42,11 @@ public class MonsterTruck : MonoBehaviour
 
     [Header("Audio")] 
     [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioSource specialEffectAudioSource;
+    [SerializeField] private AudioClip engineLoopClip;
+    [SerializeField] private AudioClip impactClip;
+    [SerializeField] private AudioClip cowboyClip;
+    [SerializeField] private AudioClip carDestroyedClip;
 
     [Header("Colliders")] 
     [SerializeField] private Collider carCollider;
@@ -81,6 +86,10 @@ public class MonsterTruck : MonoBehaviour
         }
 
         body = GetComponent<Rigidbody>();
+
+        audioSource.clip = engineLoopClip;
+        audioSource.loop = true;
+        audioSource.Play();
     }
 
     // Update is called once per frame
@@ -108,9 +117,11 @@ public class MonsterTruck : MonoBehaviour
             case State.FOLLOW_PLAYER:
             {
                 carMovement.SetMaxSpeed(20);
-                Vector3 dir = (player.position - transform.position).normalized;
+                Vector3 dir = (player.position - transform.position);
 
                 Vector2 force = new Vector2(dir.x, dir.z) * 5.0f;
+                
+                Debug.DrawLine(transform.position, transform.position + (Vector3)force * 10, Color.magenta);
 
                 movementVector += force;
 
@@ -135,7 +146,7 @@ public class MonsterTruck : MonoBehaviour
                 
                 Vector3 dir = (player.position - transform.position).normalized;
 
-                Vector2 force = new Vector2(dir.x, dir.z) * angerSpeed;
+                Vector2 force = new Vector2(dir.x, -dir.z) * angerSpeed;
 
                 movementVector += force;
                 
@@ -181,6 +192,8 @@ public class MonsterTruck : MonoBehaviour
         float movementAngle = Vector2.SignedAngle(new Vector2(movementVector.x, movementVector.y),
                 new Vector2(transform.forward.x, transform.forward.z));
             
+        Debug.DrawLine(transform.position, transform.position + (Vector3)movementVector * 10);
+        
         carMovement.Movement(movementAngle, movementSpeed);
     }
     
@@ -189,6 +202,9 @@ public class MonsterTruck : MonoBehaviour
         //If hit player with bumper 
         if (other.GetContact(0).thisCollider == bumperCollider && other.gameObject.CompareTag("Player") && state_ != State.DYING)
         {
+            specialEffectAudioSource.clip = cowboyClip;
+            specialEffectAudioSource.Play();
+            
             state_ = State.IDLE;
         }
         
@@ -205,9 +221,19 @@ public class MonsterTruck : MonoBehaviour
             currentTimer = 0;
             state_ = State.DAMAGE_TAKEN;
 
+            if (!specialEffectAudioSource.isPlaying)
+            {
+                specialEffectAudioSource.clip = impactClip;
+                specialEffectAudioSource.Play();
+            }
+
             if (lifePoint <= 0)
             {
                 other.gameObject.GetComponent<PlayerController>().ScreenShake();
+                audioSource.Stop();
+                audioSource.clip = carDestroyedClip;
+                audioSource.loop = false;
+                audioSource.Play();
 
                 //Kill bumper
                 explosionParticleSystem.Play();
