@@ -8,6 +8,13 @@ public class MonsterTruck : MonoBehaviour
     [Header("Idle state")] 
     [SerializeField] private float idleTimer = 1.0f;
 
+    [Header("Anger")] 
+    [SerializeField] private List<ParticleSystem> flameParticles;
+    [SerializeField] private float angerMaxSpeed = 50.0f;
+    [SerializeField] private float angerSpeed = 10.0f;
+    [SerializeField] private float angerTime = 5.0f;
+    [SerializeField] private float angerTimeFactor = 2.0f;
+    
     [Header("Death")] 
     [SerializeField] private ParticleSystem explosionParticleSystem;
     [SerializeField] private float dyingTime = 3.0f;
@@ -18,8 +25,10 @@ public class MonsterTruck : MonoBehaviour
     private float currentTimer = 0;
     
     //Life
+    [Header("Life")]
     [SerializeField] private int lifePoint = 3;
-
+    [SerializeField] private List<GameObject> lifeBag;
+    
     //Movement
     private Vector2 movementVector;
     
@@ -60,6 +69,11 @@ public class MonsterTruck : MonoBehaviour
             previousState_ = state_;
             state_ = State.PAUSE;
         }
+
+        foreach (var flameParticle in flameParticles)
+        {
+            flameParticle.Stop();
+        }
     }
 
     // Update is called once per frame
@@ -97,26 +111,38 @@ public class MonsterTruck : MonoBehaviour
             }
                 break;
             case State.DAMAGE_TAKEN:
-                if (currentTimer > 3.0f)
+                if (currentTimer > 1.0f)
                 {
                     currentTimer = 0;
                     state_ = State.ANGRY;
+                    
+                    foreach (var flameParticle in flameParticles)
+                    {
+                        flameParticle.Play();
+                    }
                 }
                 break;
             case State.ANGRY:
             {
-                carMovement.SetMaxSpeed(50);
+                carMovement.SetMaxSpeed(angerMaxSpeed);
                 
                 Vector3 dir = (player.position - transform.position).normalized;
 
-                Vector2 force = new Vector2(dir.x, dir.z) * 10.0f;
+                Vector2 force = new Vector2(dir.x, dir.z) * angerSpeed;
 
                 movementVector += force;
                 
-                if (currentTimer > 10.0f)
+                if (currentTimer > angerTime)
                 {
                     currentTimer = 0;
                     state_ = State.FOLLOW_PLAYER;
+                    
+                    foreach (var flameParticle in flameParticles)
+                    {
+                        flameParticle.Stop();
+                    }
+
+                    angerTime *= angerTimeFactor;
                 }
             }
                 break;
@@ -157,9 +183,12 @@ public class MonsterTruck : MonoBehaviour
             if (state_ == State.DAMAGE_TAKEN || state_ == State.ANGRY) return;
             lifePoint -= 1;
 
+            Destroy(lifeBag[0]);
+            lifeBag.RemoveAt(0);
+
             currentTimer = 0;
             state_ = State.DAMAGE_TAKEN;
-            
+
             if (lifePoint <= 0)
             {
                 other.gameObject.GetComponent<PlayerController>().ScreenShake();
@@ -179,7 +208,7 @@ public class MonsterTruck : MonoBehaviour
 
                 foreach (var smallPart in smallParts)
                 {
-                    smallPart.GetComponent<BoxCollider>().enabled = true;
+                    smallPart.GetComponent<Collider>().enabled = true;
                     smallPart.AddComponent<Rigidbody>();
                 }
 
