@@ -4392,7 +4392,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 430fc975c15e6e04b81d14cea120bdc4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cowsPrefab: {fileID: 0}
+  cowsPrefab: {fileID: 7493463636275229027, guid: 28e1a03e74b066df69d4ba4d538cd06c,
+    type: 3}
   spawnPoints: []
 --- !u!1 &1260296249
 GameObject:

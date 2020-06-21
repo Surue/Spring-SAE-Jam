@@ -34,6 +34,8 @@ public class MonsterTruck : MonoBehaviour
     
     private CarMovement carMovement;
 
+    private Rigidbody body;
+
     [Header("RayCast")]
     [SerializeField] private float distanceRayCast = 10f;
     [SerializeField] private LayerMask layerMaskRayCast;
@@ -44,6 +46,9 @@ public class MonsterTruck : MonoBehaviour
     [Header("Colliders")] 
     [SerializeField] private Collider carCollider;
     [SerializeField] private Collider bumperCollider;
+
+    [Header("Wheel animation")] 
+    [SerializeField] private List<Transform> wheels;
     
     enum State {
         PAUSE,
@@ -74,6 +79,8 @@ public class MonsterTruck : MonoBehaviour
         {
             flameParticle.Stop();
         }
+
+        body = GetComponent<Rigidbody>();
     }
 
     // Update is called once per frame
@@ -154,6 +161,15 @@ public class MonsterTruck : MonoBehaviour
                 break;
             default:
                 throw new ArgumentOutOfRangeException();
+        }
+        
+        float velocityMagnitude = body.velocity.magnitude;
+        if (velocityMagnitude > 0)
+        {
+            foreach (var wheel in wheels)
+            {
+                wheel.localRotation = Quaternion.Euler(wheel.localRotation.eulerAngles.x + velocityMagnitude * Time.deltaTime * 10, 0, 0);
+            }
         }
     }
     
