@@ -34,11 +34,16 @@ public class Cow : MonoBehaviour
 
     [Header("Colliders")] 
     [SerializeField] private Collider cowCollider;
+
+    [Header("Animation")] 
+    [SerializeField] private Animator animator;
+    [SerializeField] private float animationTime;
     
     enum State {
         PAUSE,
         IDLE, //Basic states to wait a few seconds before starting to roll again
         ROTATE_TOWARDS_PLAYER,
+        OPEN_ANIMATION,
         MILK_AT_PLAYER, 
         DYING //State to wait final destroy
     }
@@ -84,8 +89,15 @@ public class Cow : MonoBehaviour
                 
                 if (Vector3.Distance(transform.position, player.position) < distanceToPlayer)
                 {
+                    state_ = State.OPEN_ANIMATION;
+                    animator.SetBool("open", true);
+                }
+                break;
+            case State.OPEN_ANIMATION:
+                if (currentTimer > animationTime)
+                {
                     state_ = State.MILK_AT_PLAYER;
-
+                    
                     shootingTimer = Random.Range(minTimeBetweenShoot, maxTimeBetweenShoot);
                 }
                 break;
@@ -106,6 +118,7 @@ public class Cow : MonoBehaviour
                 
                 if (Vector3.Distance(transform.position, player.position) > distanceToPlayer)
                 {
+                    animator.SetBool("open", false);
                     state_ = State.ROTATE_TOWARDS_PLAYER;
                 }
                 break;
