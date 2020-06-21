@@ -21,13 +21,13 @@ public class EndUIManager : MonoBehaviour
 
     public void DisplayEndMessage()
     {
-        if (GameManager.Instance.Win)
-        {
-            endTextMesh.text = "Win";
-        } else
-        {
-            endTextMesh.text = "Loose";
-        }
+        //if (GameManager.Instance.Win)
+        //{
+        //    endTextMesh.text = "Win";
+        //} else
+        //{
+        //    endTextMesh.text = "Loose";
+        //}
         scoreTextMesh.text = "Your score : " + Time.timeSinceLevelLoad;
     }
 }

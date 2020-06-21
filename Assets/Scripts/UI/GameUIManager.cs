@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class GameUIManager : MonoBehaviour
 {
     [SerializeField] private Image speedCounter;
-    [SerializeField] private Slider lifeSlider;
+    [SerializeField] private Image lifeSlider;
 
     public void DisplaySpeed(float speedRatio)
     {
@@ -15,7 +15,6 @@ public class GameUIManager : MonoBehaviour
 
     public void DisplayLife(float maxLife, float currentLife)
     {
-        lifeSlider.maxValue = maxLife;
-        lifeSlider.value = currentLife;
+        lifeSlider.fillAmount = currentLife/maxLife;
     }
 }

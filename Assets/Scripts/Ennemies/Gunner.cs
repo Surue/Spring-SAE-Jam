@@ -169,7 +169,7 @@ public class Gunner : MonoBehaviour
                 state_ = State.IDLE;
                 currentTimer = 0;
 
-                StartCoroutine(GunBlinking());
+                //StartCoroutine(GunBlinking());
                 break;
             case State.DYING:
                 if (currentTimer > dyingTime)
@@ -188,17 +188,17 @@ public class Gunner : MonoBehaviour
         // halo.ApplyModifiedProperties();
     }
 
-    IEnumerator GunBlinking()
-    {
-        SerializedObject halo = new SerializedObject(haloObject.GetComponent("Halo"));
+    //IEnumerator GunBlinking()
+    //{
+    //    SerializedObject halo = new SerializedObject(haloObject.GetComponent("Halo"));
 
-        halo.FindProperty("m_Size").floatValue = 2.0f;
-        halo.ApplyModifiedProperties();
-        yield return new WaitForSeconds(0.1f);
+    //    halo.FindProperty("m_Size").floatValue = 2.0f;
+    //    halo.ApplyModifiedProperties();
+    //    yield return new WaitForSeconds(0.1f);
         
-        halo.FindProperty("m_Size").floatValue = 0.0f;
-        halo.ApplyModifiedProperties();
-    }
+    //    halo.FindProperty("m_Size").floatValue = 0.0f;
+    //    halo.ApplyModifiedProperties();
+    //}
 
     void EvaluateObstacleInFront()
     {
