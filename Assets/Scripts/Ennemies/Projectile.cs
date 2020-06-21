@@ -8,6 +8,7 @@ public class Projectile : MonoBehaviour {
     [SerializeField] private float maxLifeTime = 5;
     [SerializeField] private GameObject model;
     [SerializeField] private ParticleSystem explosionParticle;
+    [SerializeField] private float explosionDamage = 10.0f;
 
     [Header("Audio")] 
     [SerializeField] private AudioSource audioSource;
@@ -39,6 +40,10 @@ public class Projectile : MonoBehaviour {
             audioSource.pitch = Random.Range(0.9f, 1.0f);
             audioSource.clip = impactClip;
             audioSource.Play();
+            if (other.gameObject.CompareTag("Player"))
+            {
+                other.gameObject.GetComponent<PlayerController>().Hit(explosionDamage);
+            }
         }
 
     }
