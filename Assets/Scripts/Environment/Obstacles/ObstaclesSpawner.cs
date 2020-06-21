@@ -21,6 +21,30 @@ public class ObstaclesSpawner : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        for (int i = 0; i < maxTnts; i++)
+        {
+            if (tntGameObjects.Count < maxTnts)
+            {
+                GameObject tnt = Instantiate(tntPrefab, transform.position + new Vector3(Random.Range(-extend.x, extend.x), 0, Random.Range(-extend.y, extend.y)), Quaternion.identity, transform);
+                tntGameObjects.Add(tnt);
+            }
+        }
+        for (int i = 0; i < maxTires; i++)
+        {
+            if (tireGameObjects.Count < maxTires)
+            {
+                GameObject tire = Instantiate(tirePrefab, transform.position + new Vector3(Random.Range(-extend.x, extend.x), 0, Random.Range(-extend.y, extend.y)), Quaternion.identity, transform);
+                tireGameObjects.Add(tire);
+            }
+        }
+        for (int i = 0; i < maxCans; i++)
+        {
+            if (canGameObjects.Count < maxCans)
+            {
+                GameObject can = Instantiate(canPrefab, transform.position + new Vector3(Random.Range(-extend.x, extend.x), 0, Random.Range(-extend.y, extend.y)), Quaternion.identity, transform);
+                canGameObjects.Add(can);
+            }
+        }
     }
 
     // Update is called once per frame
