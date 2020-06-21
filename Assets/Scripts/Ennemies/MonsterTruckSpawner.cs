@@ -2,27 +2,20 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BumperSpawner : MonoBehaviour
+public class MonsterTruckSpawner : MonoBehaviour
 {
     [SerializeField] private GameObject[] barriers;
-    [SerializeField] private GameObject bumperPrefab;
+    [SerializeField] private GameObject monsterTruckPrefab;
 
     [SerializeField] private Transform[] spawnPoint;
     [SerializeField] private Transform[] enterPoint;
-    [SerializeField] private float bumperSpawnRate;
+    [SerializeField] private float monsterTruckSpawnRate;
 
-    private List<GameObject> spawnedBumper = new List<GameObject>();
+    private List<GameObject> spawnedMonsterTruck = new List<GameObject>();
 
     // Start is called before the first frame update
     void Start()
     {
-        //StartCoroutine(Spawning());
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
     }
 
     public void OpenDoors()
@@ -33,12 +26,10 @@ public class BumperSpawner : MonoBehaviour
             switch (i)
             {
                 case 0:
-                case 2:
-                    rotation = 60.0f;
+                    rotation = -120.0f;
                     break;
                 case 1:
-                case 3:
-                    rotation = -60.0f;
+                    rotation = 120.0f;
                     break;
             }
 
@@ -46,20 +37,20 @@ public class BumperSpawner : MonoBehaviour
         }
     }
 
-    public void SpawnBumper()
+    public void SpawnMonsterTruck()
     {
         int enterPointIndex = Random.Range(0, enterPoint.Length);
-        GameObject bumper = Instantiate(bumperPrefab, spawnPoint[enterPointIndex].position, Quaternion.identity, transform);
-        bumper.transform.LookAt(new Vector3(enterPoint[enterPointIndex].position.x, bumper.transform.position.y, enterPoint[enterPointIndex].position.z));
-        spawnedBumper.Add(bumper);
+        GameObject monsterTruck = Instantiate(monsterTruckPrefab, spawnPoint[enterPointIndex].position, Quaternion.identity, transform);
+        monsterTruck.transform.LookAt(new Vector3(enterPoint[enterPointIndex].position.x, monsterTruck.transform.position.y, enterPoint[enterPointIndex].position.z));
+        spawnedMonsterTruck.Add(monsterTruck);
     }
 
     void OnTriggerEnter(Collider other)
     {
         GameObject parent = other.transform.parent.gameObject;
-        if (parent.CompareTag("Enemy") && spawnedBumper.Contains(parent))
+        if (parent.CompareTag("Enemy") && spawnedMonsterTruck.Contains(parent))
         {
-            spawnedBumper.Remove(parent);
+            spawnedMonsterTruck.Remove(parent);
         }
     }
 }

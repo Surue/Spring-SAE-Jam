@@ -23,6 +23,9 @@ public class GameManager : MonoBehaviour
     private bool win = false;
     public bool Win => win;
 
+    private int destructionScore = 0;
+    public int DestructionScore => destructionScore;
+
     void Awake()
     {
         Instance = this;

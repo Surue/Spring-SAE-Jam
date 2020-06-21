@@ -18,7 +18,7 @@ public class GunnerSpawner : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        StartCoroutine(Spawning());
+        //StartCoroutine(Spawning());
     }
 
     // Update is called once per frame
@@ -27,24 +27,11 @@ public class GunnerSpawner : MonoBehaviour
         
     }
 
-    IEnumerator Spawning()
-    {
-        while (true)
-        {
-            yield return new WaitForSeconds(gunnerSpawnRate);
-            if (GameManager.Instance.CurrentState == GameManager.GameState.GAME)
-            {
-                SpawnGunner();
-            }
-        }
-    }
-
-    void SpawnGunner()
+    public void SpawnGunner()
     {
         int enterPointIndex = Random.Range(0, enterPoint.Length);
         GameObject gunner = Instantiate(gunnerPrefab, spawnPoint[enterPointIndex].position, Quaternion.identity, transform);
         gunner.transform.LookAt(new Vector3(enterPoint[enterPointIndex].position.x, gunner.transform.position.y, enterPoint[enterPointIndex].position.z));
-        //gunner.GetComponent<Rigidbody>().velocity = gunner.transform.forward * gunnerSpeed;
         gunner.GetComponent<Gunner>().SetEnterPoint(enterPoint[enterPointIndex]);
         spawnedGunner.Add(gunner);
     }

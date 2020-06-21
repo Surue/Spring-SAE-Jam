@@ -43,7 +43,7 @@ public class CarMovement : MonoBehaviour
             {
                 currentSpeed -= slowdown * Time.fixedDeltaTime;
             }
-            else if(currentSpeed < minSpeed)
+            else if(currentSpeed < -minSpeed)
             {
                 currentSpeed += slowdown * Time.fixedDeltaTime;
             } else

@@ -63,7 +63,7 @@ public class PlayerController : MonoBehaviour
                 carMovement.Movement(rotationInput, speedInput);
             }
             gameUiManager.DisplaySpeed(carMovement.CurrentSpeed / carMovement.MaxSpeed);
-            gameUiManager.DisplayLife(maxLife, currentLife);
+            gameUiManager.DisplayLife(maxLife, Mathf.Abs(currentLife));
         }
     }
 
