@@ -58,7 +58,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 8290782892783832528, guid: 5552e319d025f1b4aac852caac0cfc88, type: 3}
+  - {fileID: 2100000, guid: 4843cdd59dd63b646a680a67d784844b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -127,11 +127,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   forceSpeed: 0.5
   heightSpeed: 1
+  lifeTimeAfterExplode: 2
   screenAmplitudeGain: 1
   screenFrequencyGain: 1
+  screenshakeDuration: 0.05
   carAmplitudeGain: 1
   carFrequencyGain: 50
-  screenshakeDuration: 0.05
   carshakeDuration: 0.05
 --- !u!65 &4763374552601724456
 BoxCollider:

@@ -43,6 +43,6 @@ public class Obstacle : MonoBehaviour
     {
         obstacleSpawner.Remove(transform.parent.gameObject);
         rigidbody.AddForce((transform.position - collision.transform.position) * forceSpeed * collision.relativeVelocity.magnitude + Vector3.up * heightSpeed);
-        Destroy(gameObject, lifeTimeAfterExplode);
+        Destroy(transform.parent.gameObject, lifeTimeAfterExplode);
     }
 }

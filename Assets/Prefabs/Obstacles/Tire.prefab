@@ -65,11 +65,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   forceSpeed: 1
   heightSpeed: 50
+  lifeTimeAfterExplode: 2
   screenAmplitudeGain: 1
   screenFrequencyGain: 1
+  screenshakeDuration: 0.2
   carAmplitudeGain: 2
   carFrequencyGain: 50
-  screenshakeDuration: 0.2
   carshakeDuration: 0.2
 --- !u!65 &7251004577683918948
 BoxCollider:
@@ -156,7 +157,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 8290782892783832528, guid: 5552e319d025f1b4aac852caac0cfc88, type: 3}
+  - {fileID: 2100000, guid: 4843cdd59dd63b646a680a67d784844b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
