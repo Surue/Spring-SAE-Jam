@@ -48,70 +48,73 @@ public class EnemiesManager : MonoBehaviour
 
     void Update()
     {
-        timeSinceStart += Time.deltaTime;
-        if (timeSinceStart > timeBeforeGunners)
+        if (GameManager.Instance.CurrentState == GameManager.GameState.GAME)
         {
-            gunnerTimer += Time.deltaTime;
-            gunnerStartSpawnRate += increaseGunnerSpawnRate * Time.deltaTime;
-            if (gunnerTimer > 1 / gunnerStartSpawnRate)
+            timeSinceStart += Time.deltaTime;
+            if (timeSinceStart > timeBeforeGunners)
             {
-                gunnerSpawner.SpawnGunner();
-                gunnerTimer = 0.0f;
-            }
-        }
-        if (timeSinceStart > timeBeforeBumpers)
-        {
-            if (bumperDoorsOpens)
-            {
-                bumperTimer += Time.deltaTime;
-                bumperStartSpawnRate += increaseBumperSpawnRate * Time.deltaTime;
-                if (bumperTimer > 1 / bumperStartSpawnRate)
+                gunnerTimer += Time.deltaTime;
+                gunnerStartSpawnRate += increaseGunnerSpawnRate * Time.deltaTime;
+                if (gunnerTimer > 1 / gunnerStartSpawnRate)
                 {
-                    bumperSpawner.SpawnBumper();
-                    bumperTimer = 0.0f;
+                    gunnerSpawner.SpawnGunner();
+                    gunnerTimer = 0.0f;
                 }
             }
-            else
+            if (timeSinceStart > timeBeforeBumpers)
             {
-                bumperSpawner.OpenDoors();
-                bumperDoorsOpens = true;
-            }
-        }
-        if (timeSinceStart > timeBeforeMonsterTrucks)
-        {
-            if (monsterTrucksDoorsOpen)
-            {
-                monsterTruckSpawner.OpenDoors();
-                monsterTruckTimer += Time.deltaTime;
-                monsterTruckStartSpawnRate += increaseMonsterTruckSpawnRate * Time.deltaTime;
-                if (monsterTruckTimer > 1 / monsterTruckStartSpawnRate)
+                if (bumperDoorsOpens)
                 {
-                    monsterTruckSpawner.SpawnMonsterTruck();
-                    monsterTruckTimer = 0.0f;
+                    bumperTimer += Time.deltaTime;
+                    bumperStartSpawnRate += increaseBumperSpawnRate * Time.deltaTime;
+                    if (bumperTimer > 1 / bumperStartSpawnRate)
+                    {
+                        bumperSpawner.SpawnBumper();
+                        bumperTimer = 0.0f;
+                    }
+                }
+                else
+                {
+                    bumperSpawner.OpenDoors();
+                    bumperDoorsOpens = true;
                 }
             }
-            else
+            if (timeSinceStart > timeBeforeMonsterTrucks)
             {
-                monsterTruckSpawner.OpenDoors();
-                monsterTrucksDoorsOpen = true;
-            }
-        }
-        if (timeSinceStart > timeBeforeCows)
-        {
-            if (cowsSpawned)
-            {
-                cowTimer += Time.deltaTime;
-                cowStartSpawnRate += increaseCowSpawnRate * Time.deltaTime;
-                if (cowTimer > 1 / cowStartSpawnRate)
+                if (monsterTrucksDoorsOpen)
                 {
-                    cowSpawner.SpawnCows();
-                    cowTimer = 0.0f;
+                    monsterTruckSpawner.OpenDoors();
+                    monsterTruckTimer += Time.deltaTime;
+                    monsterTruckStartSpawnRate += increaseMonsterTruckSpawnRate * Time.deltaTime;
+                    if (monsterTruckTimer > 1 / monsterTruckStartSpawnRate)
+                    {
+                        monsterTruckSpawner.SpawnMonsterTruck();
+                        monsterTruckTimer = 0.0f;
+                    }
+                }
+                else
+                {
+                    monsterTruckSpawner.OpenDoors();
+                    monsterTrucksDoorsOpen = true;
                 }
             }
-            else
+            if (timeSinceStart > timeBeforeCows)
             {
-                cowSpawner.Intro();
-                cowsSpawned = true;
+                if (cowsSpawned)
+                {
+                    cowTimer += Time.deltaTime;
+                    cowStartSpawnRate += increaseCowSpawnRate * Time.deltaTime;
+                    if (cowTimer > 1 / cowStartSpawnRate)
+                    {
+                        cowSpawner.SpawnCows();
+                        cowTimer = 0.0f;
+                    }
+                }
+                else
+                {
+                    cowSpawner.Intro();
+                    cowsSpawned = true;
+                }
             }
         }
     }

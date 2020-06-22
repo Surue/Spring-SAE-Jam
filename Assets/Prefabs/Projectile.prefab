@@ -4998,7 +4998,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -710910164944623929, guid: 09bbe11f057fd7c48bdfd92fc1c337d2, type: 3}
+  - {fileID: 2100000, guid: b22039b87eca3874697c346c26c55326, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -5112,5 +5112,6 @@ MonoBehaviour:
   maxLifeTime: 5
   model: {fileID: 6651964877843202396}
   explosionParticle: {fileID: 1288487657177552944}
+  explosionDamage: 10
   audioSource: {fileID: 1576692642331874654}
   impactClip: {fileID: 8300000, guid: b8455cf80ac2bbbabb3213da1816401c, type: 3}
