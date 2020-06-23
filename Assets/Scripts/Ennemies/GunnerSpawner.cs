@@ -15,18 +15,6 @@ public class GunnerSpawner : MonoBehaviour
 
     private List<GameObject> spawnedGunner = new List<GameObject>();
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        //StartCoroutine(Spawning());
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     public void SpawnGunner()
     {
         int enterPointIndex = Random.Range(0, enterPoint.Length);
@@ -38,6 +26,8 @@ public class GunnerSpawner : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
+        if (other.transform.parent == null) return;
+        
         GameObject parent = other.transform.parent.gameObject;
         if (parent.CompareTag("Enemy") && spawnedGunner.Contains(parent))
         {

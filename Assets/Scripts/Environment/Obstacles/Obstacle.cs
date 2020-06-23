@@ -41,7 +41,11 @@ public class Obstacle : MonoBehaviour
 
     protected virtual void Destruct(Collision collision)
     {
-        obstacleSpawner.Remove(transform.parent.gameObject);
+        if (obstacleSpawner != null)
+        {
+            obstacleSpawner.Remove(transform.parent.gameObject);
+        }
+
         rigidbody.AddForce((transform.position - collision.transform.position) * forceSpeed * collision.relativeVelocity.magnitude + Vector3.up * heightSpeed);
         Destroy(transform.parent.gameObject, lifeTimeAfterExplode);
     }
