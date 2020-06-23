@@ -60,17 +60,18 @@ public class Crowd : MonoBehaviour
     {
         if (waveLaunch)
         {
+            float relativeWavePosBegin = currentWavePos - Mathf.PI * jumpSpeed;
+            float relativeWavePosEnd = currentWavePos + Mathf.PI * jumpSpeed * nbWaves * 2 - Mathf.PI * jumpSpeed;
+            
             for (int i = 0; i < nbBleach * peoplePerStep; i++)
             {
                 for (int j = 0; j < prefab[i].Count; j++)
                 {
-                    if (i > currentWavePos - Mathf.PI * jumpSpeed && i < currentWavePos + Mathf.PI * jumpSpeed * nbWaves * 2 - Mathf.PI * jumpSpeed)
+                    prefab[i][j].transform.position = prefabPosition[i][j];
+                    
+                    if (i > relativeWavePosBegin && i < relativeWavePosEnd)
                     {
-                        prefab[i][j].transform.position = prefabPosition[i][j] + Vector3.up * (Mathf.Cos((currentWavePos - i) / jumpSpeed) + 1) * jumpHeight;
-                    }
-                    else
-                    {
-                        prefab[i][j].transform.position = prefabPosition[i][j];
+                        prefab[i][j].transform.position += Vector3.up * ((Mathf.Cos((currentWavePos - i) / jumpSpeed) + 1) * jumpHeight);
                     }
                 }
             }
@@ -86,7 +87,7 @@ public class Crowd : MonoBehaviour
             {
                 for (int j = 0; j < prefab[i].Count; j++)
                 {
-                    prefab[i][j].transform.position = prefabPosition[i][j] + Vector3.up * (Random.value > 0.5 ? 0 : jumpHeight);
+                    prefab[i][j].transform.position = prefabPosition[i][j] + Vector3.up * (Random.value > 0.5f ? 0.0f : jumpHeight);
                 }
             }
         }

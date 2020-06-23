@@ -9191,11 +9191,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
-    - target: {fileID: 3346155927596662344, guid: 48e25c35cb863da499f329fdc3014a53,
-        type: 3}
-      propertyPath: damageRatio
-      value: 0.1
-      objectReference: {fileID: 0}
     - target: {fileID: 3346155927596662345, guid: 48e25c35cb863da499f329fdc3014a53,
         type: 3}
       propertyPath: m_LocalPosition.x
