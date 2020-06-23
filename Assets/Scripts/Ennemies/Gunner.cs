@@ -180,25 +180,7 @@ public class Gunner : MonoBehaviour
             default:
                 throw new ArgumentOutOfRangeException();
         }
-        
-        // SerializedObject halo = new SerializedObject(haloObject.GetComponent("Halo"));
-        // halo.FindProperty("m_Size").floatValue = 1;
-        // halo.FindProperty("m_Enabled").boolValue = true;
-        // halo.FindProperty("m_Color").colorValue = Color.green;
-        // halo.ApplyModifiedProperties();
     }
-
-    //IEnumerator GunBlinking()
-    //{
-    //    SerializedObject halo = new SerializedObject(haloObject.GetComponent("Halo"));
-
-    //    halo.FindProperty("m_Size").floatValue = 2.0f;
-    //    halo.ApplyModifiedProperties();
-    //    yield return new WaitForSeconds(0.1f);
-        
-    //    halo.FindProperty("m_Size").floatValue = 0.0f;
-    //    halo.ApplyModifiedProperties();
-    //}
 
     void EvaluateObstacleInFront()
     {
@@ -264,8 +246,11 @@ public class Gunner : MonoBehaviour
             body.velocity = (transform.position - other.GetContact(0).point).normalized * other.rigidbody.velocity.magnitude;
             body.constraints = RigidbodyConstraints.None;
 
-            audioSource.clip = deathSound;
-            audioSource.Play();
+            if (audioSource.isPlaying && audioSource.clip != deathSound || !audioSource.isPlaying)
+            {
+                audioSource.clip = deathSound;
+                audioSource.Play();
+            }
 
             foreach (var smallPart in smallParts)
             {

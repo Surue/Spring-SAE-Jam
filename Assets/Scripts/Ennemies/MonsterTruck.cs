@@ -202,9 +202,12 @@ public class MonsterTruck : MonoBehaviour
         //If hit player with bumper 
         if (other.GetContact(0).thisCollider == bumperCollider && other.gameObject.CompareTag("Player") && state_ != State.DYING)
         {
-            specialEffectAudioSource.clip = cowboyClip;
-            specialEffectAudioSource.Play();
-            
+            if (!specialEffectAudioSource.isPlaying)
+            {
+                specialEffectAudioSource.clip = cowboyClip;
+                specialEffectAudioSource.Play();
+            }
+
             state_ = State.IDLE;
         }
         
@@ -230,10 +233,13 @@ public class MonsterTruck : MonoBehaviour
             if (lifePoint <= 0)
             {
                 other.gameObject.GetComponent<PlayerController>().ScreenShake();
-                audioSource.Stop();
-                audioSource.clip = carDestroyedClip;
-                audioSource.loop = false;
-                audioSource.Play();
+                if (audioSource.isPlaying && audioSource.clip != carDestroyedClip)
+                {
+                    audioSource.Stop();
+                    audioSource.clip = carDestroyedClip;
+                    audioSource.loop = false;
+                    audioSource.Play();
+                }
 
                 //Kill bumper
                 explosionParticleSystem.Play();
@@ -255,8 +261,6 @@ public class MonsterTruck : MonoBehaviour
                 }
 
                 Destroy(carCollider);
-
-                audioSource.Play();
             }
         }
     }

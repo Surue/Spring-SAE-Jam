@@ -12,18 +12,7 @@ public class BumperSpawner : MonoBehaviour
     [SerializeField] private float bumperSpawnRate;
 
     private List<GameObject> spawnedBumper = new List<GameObject>();
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        //StartCoroutine(Spawning());
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
+    
 
     public void OpenDoors()
     {

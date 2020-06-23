@@ -13,11 +13,6 @@ public class MonsterTruckSpawner : MonoBehaviour
 
     private List<GameObject> spawnedMonsterTruck = new List<GameObject>();
 
-    // Start is called before the first frame update
-    void Start()
-    {
-    }
-
     public void OpenDoors()
     {
         for (int i = 0; i < barriers.Length; i++)

@@ -5691,7 +5691,7 @@ MonoBehaviour:
   - {fileID: 1587036098}
   - {fileID: 2093643958}
   - {fileID: 1703427738}
-  peoplePerStep: 1
+  peoplePerStep: 5
   waveSpeed: 50
   jumpSpeed: 3
   jumpHeight: 1

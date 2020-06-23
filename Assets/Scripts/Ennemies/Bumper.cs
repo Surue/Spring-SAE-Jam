@@ -231,8 +231,11 @@ public class Bumper : MonoBehaviour {
             
             Destroy(carCollider);
             Destroy(bumperCollider);
-            
-            audioSource.Play();
+
+            if (!audioSource.isPlaying)
+            {
+                audioSource.Play();
+            }
         }
     }
 

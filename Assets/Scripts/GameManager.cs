@@ -31,17 +31,6 @@ public class GameManager : MonoBehaviour
         Instance = this;
         uiManager = FindObjectOfType<UIManager>();
     }
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 
     public void End(bool win)
     {
